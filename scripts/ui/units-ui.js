@@ -120,9 +120,9 @@ Events.run(Trigger.update, () => {
     }
 });
 
-function getTeamColor(team){
+function getTeamColor(team) {
 	return "[#"+team.color.toString()+"]";
 }
-function toBlockEmoji(block){
+function toBlockEmoji(block) {
 	return String.fromCharCode(Fonts.getUnicode(block.name));
 }

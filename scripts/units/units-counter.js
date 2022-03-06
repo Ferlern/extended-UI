@@ -1,6 +1,6 @@
 const teamsUtil = require("extended-ui/utils/teams");
 
-exports.getUnitsValueTop = function (amountToDisplay, granulatiry, hideCoreUnits, hideSupportUnits) {
+exports.getUnitsValueTop = function(amountToDisplay, granulatiry, hideCoreUnits, hideSupportUnits) {
     const teams = teamsUtil.getAllTeams();
     let top = [];
 

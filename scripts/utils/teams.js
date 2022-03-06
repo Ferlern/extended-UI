@@ -1,4 +1,4 @@
-exports.getAllTeams = function (force) {
+exports.getAllTeams = function(force) {
 	const timer = Date.now();
     if (!force && allTeams.length) return allTeams;
     updateTimer = timer;
