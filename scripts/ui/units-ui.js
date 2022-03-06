@@ -1,5 +1,4 @@
 const unitsCounter = require("extended-ui/units/units-counter");
-const teamsUtil = require("extended-ui/utils/teams");
 
 const granulatiry = 6;
 const amountToDisplay = 8;
@@ -54,7 +53,7 @@ Events.on(ClientLoadEvent, event => {
             return unitsUiVisible;
         };
 
-        for (let i = 0; i < amountToDisplay + 1; i++) {
+        for (let i = 0; i < amountToDisplay; i++) {
             labels.push(nestedTable.labelWrap("").width(300).pad(1).get());
             nestedTable.row();
         }
@@ -74,12 +73,7 @@ Events.on(ClientLoadEvent, event => {
 			unitsUiVisible = !unitsUiVisible;
 		})).width(buttonSize).height(buttonSize).name("show").tooltip("Show or hide units table");
 
-        let imageButton = t.button(Icon.refresh, Styles.clearTransi, run( () => {
-			teamsUtil.getAllTeams(true);
-		})).width(buttonSize).height(buttonSize).name("refresh").tooltip("Refresh teams").get();
-        imageButton.visibility = () => unitsUiVisible;
-
-        imageButton = t.button(Icon.players, Styles.clearToggleTransi, run( () => {
+        let imageButton = t.button(Icon.players, Styles.clearToggleTransi, run( () => {
 			hideCoreUnits = !hideCoreUnits;
 		})).update(b => b.setChecked(hideCoreUnits)).width(buttonSize).height(buttonSize).name("core-units").tooltip("Hide core defender").get();
         imageButton.visibility = () => unitsUiVisible;
@@ -107,8 +101,8 @@ Events.run(Trigger.update, () => {
         if (!teamInfo) {
             newLabelText = '';
         } else {
-            let team = teamInfo.team;
-            let teamUnits = teamInfo.units;
+            let team = teamInfo[1].team;
+            let teamUnits = teamInfo[1].units;
             newLabelText = '';
             // newLabelText = getTeamColor(team) + team.name + ': ';
 

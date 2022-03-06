@@ -1,41 +1,46 @@
-const teamsUtil = require("extended-ui/utils/teams");
+const iterationTools = require("extended-ui/utils/iteration-tools");
 
 exports.getUnitsValueTop = function(amountToDisplay, granulatiry, hideCoreUnits, hideSupportUnits) {
-    const teams = teamsUtil.getAllTeams();
-    let top = [];
+    let unitsIterator = Groups.unit.iterator();
+    let top = new Map();
 
-    for (let team of teams) {
-        let units = {};
+    let unitCounter = (unit) => {
+        if (hideCoreUnits && coreUnits.includes(unit.type.toString())) return;
+        if (hideSupportUnits && supportUnits.includes(unit.type.toString())) return;
 
-        team.data().units.each((unit) => {
-            if (hideCoreUnits && coreUnits.includes(unit.type.toString())) return;
-            if (hideSupportUnits && supportUnits.includes(unit.type.toString())) return;
-            if (!units[unit.type]) {
-                units[unit.type] = {amount: 0};
-            }
-            units[unit.type].amount++;
-        });
+        let team = unit.team;
+        let units;
 
-        if (!units) continue;
+        if (!top.has(team.id)) {
+            top.set(team.id, {team: team, units: {}});
+        }
+        units = top.get(team.id).units;
 
+        if (!units[unit.type]) {
+            units[unit.type] = {amount: 0};
+        }
+        units[unit.type].amount++;
+    }
+
+    iterationTools.iterateSeq(unitCounter, unitsIterator);
+
+    top.forEach((teamInfo, team_id) => {
         let value = 0;
+        let units = teamInfo.units;
         for (let unit in units) {
             let unitValue = units[unit].amount * unitsValues[unit] || 0;
             units[unit].value = unitValue;
             value += unitValue;
         }
-        const sortedUnits = Object.fromEntries(
+        top.get(team_id).units = Object.fromEntries(
             Object.entries(units)
                 .sort(([,a],[,b]) => b.value - a.value)
                 .slice(0, granulatiry)
-        )
+        );
+        top.get(team_id).value = value;
+    })
 
-        top.push({team: team, units: sortedUnits, value: value});
-    }
-
-    top = top.sort( (a, b) => b.value - a.value )
-        .slice(0, amountToDisplay);
-    return top;
+    return Array.from(top.entries()).sort((a, b) => b[1].value - a[1].value).slice(0, amountToDisplay);
 }
 
 let coreUnits = [
