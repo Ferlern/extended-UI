@@ -5,6 +5,7 @@ const amountToDisplay = 8;
 let labels = [];
 let newLabelText = '';
 let updateTimer = Date.now();
+let prevUnitsUiVisible = true;
 let unitsUiVisible = true;
 let hideCoreUnits = false;
 let hideSupportUnits = false;
@@ -46,51 +47,58 @@ const unitUnicodes = {
 }
 
 Events.on(ClientLoadEvent, event => {
-    Vars.ui.hudGroup.fill(cons(t => {
-        let nestedTable = t.table(Styles.black3).margin(3).get();
+    const buttonSize = 40;
+    let overlayMarker = Vars.ui.hudGroup.find("waves");
 
-        t.visibility = () => {
-            return unitsUiVisible;
-        };
+    overlayMarker.row();
 
-        for (let i = 0; i < amountToDisplay; i++) {
-            labels.push(nestedTable.labelWrap("").width(300).pad(1).get());
-            nestedTable.row();
-        }
+    let wrapTable = overlayMarker.table(Styles.black3).update((t) => {
+            if (prevUnitsUiVisible != unitsUiVisible) {
+                t.setBackground(unitsUiVisible ? Styles.black3 : Styles.none);
+                prevUnitsUiVisible = unitsUiVisible;
+            }
+        }).top().left().get();
 
-        nestedTable.pack();
+    let unitTableButtons = wrapTable.table().width(buttonSize*3).margin(3).get();
 
-        t.top().left().marginTop(125);
-        t.pack();
-    }));    
-})
+    unitTableButtons.button(Icon.play, Styles.defaulti, run( () => {
+        unitsUiVisible = !unitsUiVisible;
+    })).width(buttonSize).height(buttonSize).pad(1).name("show").tooltip("Show or hide units table");
 
-Events.on(ClientLoadEvent, event => {
-    Vars.ui.hudGroup.fill(cons(t => {
-        const buttonSize = 40;
+    let imageButton = unitTableButtons.button(new TextureRegionDrawable(Icon.players), Styles.defaulti, run( () => {
+        hideCoreUnits = !hideCoreUnits;
+    })).update(b => b.setChecked(hideCoreUnits)).width(buttonSize).height(buttonSize).pad(1).name("core-units").tooltip("Hide core defender").get();
+    imageButton.visibility = () => unitsUiVisible;
+    imageButton.resizeImage(buttonSize*0.6);
 
-        t.button(Icon.play, Styles.clearTransi, run( () => {
-			unitsUiVisible = !unitsUiVisible;
-		})).width(buttonSize).height(buttonSize).name("show").tooltip("Show or hide units table");
+    imageButton = unitTableButtons.button(new TextureRegionDrawable(Icon.github), Styles.defaulti, run( () => {
+        hideSupportUnits = !hideSupportUnits;
+    })).update(b => b.setChecked(hideSupportUnits)).width(buttonSize).height(buttonSize).pad(1).name("support-units").tooltip("Hide support units").get();
+    imageButton.visibility = () => unitsUiVisible;
+	imageButton.resizeImage(buttonSize*0.6);
 
-        let imageButton = t.button(Icon.players, Styles.clearToggleTransi, run( () => {
-			hideCoreUnits = !hideCoreUnits;
-		})).update(b => b.setChecked(hideCoreUnits)).width(buttonSize).height(buttonSize).name("core-units").tooltip("Hide core defender").get();
-        imageButton.visibility = () => unitsUiVisible;
 
-        imageButton = t.button(Icon.github, Styles.clearToggleTransi, run( () => {
-			hideSupportUnits = !hideSupportUnits;
-		})).update(b => b.setChecked(hideSupportUnits)).width(buttonSize).height(buttonSize).name("support-units").tooltip("Hide support units").get();
-        imageButton.visibility = () => unitsUiVisible;
+    //TODO remove this stupid way for align buttons
+    unitTableButtons.labelWrap("").width(300 - (buttonSize + 2) * 3);
 
-        t.top().left().marginTop(85);
-        t.pack();
-    }));    
+    wrapTable.row();
+
+    let unitTable = wrapTable.table().margin(3).get();
+
+
+    unitTable.visibility = () => {
+        return unitsUiVisible;
+    };
+
+    for (let i = 0; i < amountToDisplay; i++) {
+        labels.push(unitTable.labelWrap("").width(300).pad(1).get());
+        unitTable.row();
+    }
 })
 
 Events.run(Trigger.update, () => {
     const timer = Date.now();
-    if (timer - 2000 < updateTimer) return;
+    if (timer - 100 < updateTimer) return;
     updateTimer = timer;
 
     const unitsValueTop = unitsCounter.getUnitsValueTop(amountToDisplay, granulatiry, hideCoreUnits, hideSupportUnits);

@@ -40,11 +40,11 @@ Events.on(ClientLoadEvent, event => {
     coreItems.row();
     coreItems.getCells().get(0).padBottom(6);
 
-    let powerBar = new Bar(prov(() => powerToString() ), prov(() => Pal.accent), floatp( () => currentPowerStauts() ));
+    let powerBar = new Bar(prov(() => powerToString()), prov(() => Pal.accent), floatp(() => currentPowerStatus()));
     coreItems.add(powerBar).width(powerBarDefaultWidth).height(powerBarDefaultHeight).pad(4);
 });
 
-function currentPowerStauts() {
+function currentPowerStatus() {
     if (!maxNetPower) {
         return 0;
     }
