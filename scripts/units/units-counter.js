@@ -90,7 +90,8 @@ let unitsValues = {
     crawler: resourceValues.coal*20 + resourceValues.silicon*10 + resourceValues.energy*72*12,
     flare: resourceValues.silicon*15 + resourceValues.energy*72*15,
     mono: resourceValues.silicon*30 + resourceValues.lead*15 + resourceValues.energy*72*35,
-    risso: resourceValues.silicon*20 + resourceValues.metaglss*35 + resourceValues.energy*72*45
+    risso: resourceValues.silicon*20 + resourceValues.metaglss*35 + resourceValues.energy*72*45,
+    retusa: resourceValues.silicon*15 + resourceValues.metaglss*25 + resourceValues.titanium*20 + resourceValues.energy*72*50
 }
 
 {
@@ -166,6 +167,18 @@ let unitsValues = {
         },
         {
             name: "omura", base: "risso", tier: "fifth"
+        },
+        {
+            name: "oxynoe", base: "retusa", tier: "second"
+        },
+        {
+            name: "cyerce", base: "retusa", tier: "third"
+        },
+        {
+            name: "aegires", base: "retusa", tier: "fourth"
+        },
+        {
+            name: "navanax", base: "retusa", tier: "fifth"
         },
     ]
 

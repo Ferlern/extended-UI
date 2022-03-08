@@ -44,6 +44,11 @@ const unitUnicodes = {
     'alpha': '\uF7EB',
     'beta': '\uF7EA',
     'gamma': '\uF7E9',
+    'retusa': '\uF788',
+    'oxynoe': '\uF784',
+    'cyerce': '\uF783',
+    'aegires': '\uF782',
+    'navanax': '\uF780',
 }
 
 Events.on(ClientLoadEvent, event => {
@@ -115,7 +120,9 @@ Events.run(Trigger.update, () => {
             // newLabelText = getTeamColor(team) + team.name + ': ';
 
             for (let unit of Object.entries(teamUnits)) {
-                newLabelText += getTeamColor(team) + unit[1].amount + '[white]' + unitUnicodes[unit[0]] + ' ';
+                newLabelText += getTeamColor(team) + unit[1].amount + '[white]';
+                newLabelText += unitUnicodes[unit[0]] || '[?]';
+                newLabelText += ' ';
             }
         };
         labels[i].setText(newLabelText);

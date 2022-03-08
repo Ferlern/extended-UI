@@ -56,12 +56,22 @@ Events.run(Trigger.update, () => {
 });
 
 Events.on(ClientLoadEvent, event => {
-    coreItems = Vars.ui.hudGroup.find("coreitems");
-    coreItems.row();
-    coreItems.getCells().get(0).padBottom(6);
-
     let powerBar = new Bar(prov(() => powerToString()), prov(() => Pal.accent), floatp(() => currentPowerStatus()));
-    coreItems.add(powerBar).visible(() => Boolean(storedNetPower) || Boolean(currentNetPower)).width(powerBarDefaultWidth).height(powerBarDefaultHeight).pad(4);
+
+    if (Version.number < 7) {
+        coreItems = Vars.ui.hudGroup.find("coreitems");
+        coreItems.row();
+        coreItems.getCells().get(0).padBottom(6);
+        coreItems.add(powerBar).visible(() => Boolean(storedNetPower) || Boolean(currentNetPower)).width(powerBarDefaultWidth).height(powerBarDefaultHeight).pad(4);
+    } else {
+        Vars.ui.hudGroup.fill(cons(t => {
+            t.add(powerBar).width(powerBarDefaultWidth).height(powerBarDefaultHeight).visible(() => {
+                return (Boolean(storedNetPower) || Boolean(currentNetPower));
+            });
+            t.top().right().marginRight(160).marginTop(10);
+            t.pack();
+        }));
+    }
 });
 
 function currentPowerStatus() {
