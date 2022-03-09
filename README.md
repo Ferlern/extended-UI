@@ -18,3 +18,7 @@ Shows global network status. Also makes warning about net separating
 ### Other
 
 Extends min and max zoom limits
+
+Factory progress bar
+
+![progress-bar](https://cdn.discordapp.com/attachments/606977691757051920/951186180895023165/unknown.png)
