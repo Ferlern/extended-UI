@@ -22,3 +22,7 @@ Extends min and max zoom limits
 Factory progress bar
 
 ![progress-bar](https://cdn.discordapp.com/attachments/606977691757051920/951186180895023165/unknown.png)
+
+Unit health bar
+
+![health-bar](https://cdn.discordapp.com/attachments/606977691757051920/951581427873484830/unknown.png)
