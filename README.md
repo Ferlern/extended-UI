@@ -23,6 +23,6 @@ Factory progress bar
 
 ![progress-bar](https://cdn.discordapp.com/attachments/606977691757051920/951186180895023165/unknown.png)
 
-Unit health bar
+Unit health & shield bars
 
-![health-bar](https://cdn.discordapp.com/attachments/606977691757051920/951581427873484830/unknown.png)
+![health-shield-bar](https://cdn.discordapp.com/attachments/606977691757051920/951889454824579092/unknown.png)

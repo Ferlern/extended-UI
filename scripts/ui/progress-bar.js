@@ -20,7 +20,7 @@ function ProgressBar() {
 
         let text = barBuilder.buildPercentLabel(progress);
         barBuilder.draw(
-            build.x, build.y, progress, build.block.size, factoryProgressBarSize, text, build.team.color
+            build.x, build.y, progress, build.block.size, factoryProgressBarSize, text, build.team.color, 1
         )
 	}
 }
