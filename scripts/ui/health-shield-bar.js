@@ -110,7 +110,7 @@ function isBarNecessary(x, y, value, prevStatus, force) {
     if (!renderUtils.inCamera(Core.camera, x, y)) return false;
     if (value <= 0) return false;
     if (force) return true;
-    if (value == 1) return false;
+    if (value >= 1) return false;
     if (!prevStatus) return true;
 
     if (Date.now() - prevStatus.time < unitBarTotalDisplayTime ) {
