@@ -9,6 +9,10 @@ let prevUnitsUiVisible = true;
 let unitsUiVisible = true;
 let hideCoreUnits = false;
 let hideSupportUnits = false;
+let isBuilded = false;
+
+let overlayMarker;
+let contentTable;
 
 const unitUnicodes = {
     'dagger': '\uF800',
@@ -51,20 +55,68 @@ const unitUnicodes = {
     'navanax': '\uF780',
 }
 
-Events.on(ClientLoadEvent, event => {
-    const buttonSize = 40;
-    let overlayMarker = Vars.ui.hudGroup.find("waves");
+Events.run(Trigger.update, () => {
+    if (!Core.settings.getBool("eui-ShowUnitTable", true)) {
+        if (isBuilded) {
+            clearTable();
+        }
+        return;
+    }
 
-    overlayMarker.row();
+    if (!overlayMarker) {
+        setMarker();
+    }
 
-    let wrapTable = overlayMarker.table(Styles.black3).update((t) => {
-            if (prevUnitsUiVisible != unitsUiVisible) {
-                t.setBackground(unitsUiVisible ? Styles.black3 : Styles.none);
-                prevUnitsUiVisible = unitsUiVisible;
+    if (isRebuildNeeded()) {
+        rebuildTable();
+    }
+
+    const timer = Date.now();
+    if (timer - 100 < updateTimer) return;
+    updateTimer = timer;
+
+    const unitsValueTop = unitsCounter.getUnitsValueTop(amountToDisplay, granulatiry, hideCoreUnits, hideSupportUnits);
+    
+    newLabelText = '';
+    for (let i = 0; i < amountToDisplay; i++) {
+        let teamInfo = unitsValueTop[i];
+
+        if (!teamInfo) {
+            newLabelText = '';
+        } else {
+            let team = teamInfo[1].team;
+            let teamUnits = teamInfo[1].units;
+            newLabelText = '';
+            // newLabelText = getTeamColor(team) + team.name + ': ';
+
+            for (let unit of Object.entries(teamUnits)) {
+                newLabelText += getTeamColor(team) + unit[1].amount + '[white]';
+                newLabelText += unitUnicodes[unit[0]] || '[?]';
+                newLabelText += ' ';
             }
-        }).top().left().get();
+        };
+        let currentLabel = labels[i];
+        if (currentLabel) currentLabel.setText(newLabelText);
+    }
+});
 
-    let unitTableButtons = wrapTable.table().width(buttonSize*3).margin(3).get();
+function rebuildTable() {
+    clearTable();
+    buildTable();
+}
+
+function clearTable() {
+    if (!isBuilded) return;
+
+    labels = [];
+    contentTable.clearChildren();
+    isBuilded = false;
+}
+
+function buildTable() {
+    const buttonSize = 40;
+
+    let unitTableButtons = contentTable.table().width(buttonSize*3).margin(3).get();
 
     unitTableButtons.button(Icon.play, Styles.defaulti, run( () => {
         unitsUiVisible = !unitsUiVisible;
@@ -80,15 +132,15 @@ Events.on(ClientLoadEvent, event => {
         hideSupportUnits = !hideSupportUnits;
     })).update(b => b.setChecked(hideSupportUnits)).width(buttonSize).height(buttonSize).pad(1).name("support-units").tooltip("Hide support units").get();
     imageButton.visibility = () => unitsUiVisible;
-	imageButton.resizeImage(buttonSize*0.6);
+    imageButton.resizeImage(buttonSize*0.6);
 
 
     //TODO remove this stupid way for align buttons
     unitTableButtons.labelWrap("").width(300 - (buttonSize + 2) * 3);
 
-    wrapTable.row();
+    contentTable.row();
 
-    let unitTable = wrapTable.table().margin(3).get();
+    let unitTable = contentTable.table().margin(3).get();
 
 
     unitTable.visibility = () => {
@@ -99,39 +151,30 @@ Events.on(ClientLoadEvent, event => {
         labels.push(unitTable.labelWrap("").width(300).pad(1).get());
         unitTable.row();
     }
-})
 
-Events.run(Trigger.update, () => {
-    const timer = Date.now();
-    if (timer - 100 < updateTimer) return;
-    updateTimer = timer;
+    isBuilded = true;
+}
 
-    const unitsValueTop = unitsCounter.getUnitsValueTop(amountToDisplay, granulatiry, hideCoreUnits, hideSupportUnits);
-    
-    newLabelText = '';
-    for (let i = 0; i < amountToDisplay; i++) {
-        let teamInfo = unitsValueTop[i];
-        if (!teamInfo) {
-            newLabelText = '';
-        } else {
-            let team = teamInfo[1].team;
-            let teamUnits = teamInfo[1].units;
-            newLabelText = '';
-            // newLabelText = getTeamColor(team) + team.name + ': ';
+function isRebuildNeeded() {
+    if (!isBuilded) return true;
+    return false;
+}
 
-            for (let unit of Object.entries(teamUnits)) {
-                newLabelText += getTeamColor(team) + unit[1].amount + '[white]';
-                newLabelText += unitUnicodes[unit[0]] || '[?]';
-                newLabelText += ' ';
-            }
-        };
-        labels[i].setText(newLabelText);
-    }
-});
+function setMarker() {
+    overlayMarker = Vars.ui.hudGroup.find("waves");
+    overlayMarker.row();
+    contentTable = overlayMarker.table(Styles.black3).update((t) => {
+        if (prevUnitsUiVisible != unitsUiVisible) {
+            t.setBackground(unitsUiVisible ? Styles.black3 : Styles.none);
+            prevUnitsUiVisible = unitsUiVisible;
+        }
+    }).top().left().get();
+    contentTable.visibility = () => isBuilded;
+}
 
 function getTeamColor(team) {
-	return "[#"+team.color.toString()+"]";
+    return "[#"+team.color.toString()+"]";
 }
 function toBlockEmoji(block) {
-	return String.fromCharCode(Fonts.getUnicode(block.name));
+    return String.fromCharCode(Fonts.getUnicode(block.name));
 }

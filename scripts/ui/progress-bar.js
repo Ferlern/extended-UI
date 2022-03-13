@@ -6,23 +6,23 @@ const factoryProgressBarSize = settings.factoryProgressBarSize;
 
 function ProgressBar() {
     this.replace = false;
-	this.draw = function(build) {
-        if (!settings.showFactoryProgress) return;
+    this.draw = function(build) {
+        if (!Core.settings.getBool("eui-showFactoryProgress", true)) return;
         if (build.currentPlan == -1) return;
 
-		let progress = 0;
+        let progress = 0;
 
-		if (build instanceof UnitFactory.UnitFactoryBuild) {
-			progress = build.progress / build.block.plans.get(build.currentPlan).time;
-		} else {
-			progress = build.progress / build.block.constructTime;
-		}
+        if (build instanceof UnitFactory.UnitFactoryBuild) {
+            progress = build.progress / build.block.plans.get(build.currentPlan).time;
+        } else {
+            progress = build.progress / build.block.constructTime;
+        }
 
         let text = barBuilder.buildPercentLabel(progress);
         barBuilder.draw(
             build.x, build.y, progress, build.block.size, factoryProgressBarSize, text, build.team.color, 1
         )
-	}
+    }
 }
 
 Events.on(ClientLoadEvent, event => {

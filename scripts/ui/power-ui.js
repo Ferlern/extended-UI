@@ -13,6 +13,8 @@ let debugTimer;
 
 
 Events.run(Trigger.update, () => {
+    if (!Core.settings.getBool("eui-showPowerBar", true)) return;
+
     let newStoredNetPower = 0;
     let newMaxNetPower = 0;
     let newCurrentNetPower = 0;
@@ -62,11 +64,11 @@ Events.on(ClientLoadEvent, event => {
         coreItems = Vars.ui.hudGroup.find("coreitems");
         coreItems.row();
         coreItems.getCells().get(0).padBottom(6);
-        coreItems.add(powerBar).visible(() => Boolean(storedNetPower) || Boolean(currentNetPower)).width(powerBarDefaultWidth).height(powerBarDefaultHeight).pad(4);
+        coreItems.add(powerBar).visible(() => powerBarVisible()).width(powerBarDefaultWidth).height(powerBarDefaultHeight).pad(4);
     } else {
         Vars.ui.hudGroup.fill(cons(t => {
             t.add(powerBar).width(powerBarDefaultWidth).height(powerBarDefaultHeight).visible(() => {
-                return (Boolean(storedNetPower) || Boolean(currentNetPower));
+                return (powerBarVisible());
             });
             t.top().right().marginRight(160).marginTop(10);
             t.pack();
@@ -79,6 +81,10 @@ function currentPowerStatus() {
         return 0;
     }
     return storedNetPower / maxNetPower;
+}
+
+function powerBarVisible() {
+    return Core.settings.getBool("eui-showPowerBar", true) && (Boolean(storedNetPower) || Boolean(currentNetPower)); 
 }
 
 function powerToString() {

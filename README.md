@@ -2,6 +2,10 @@
 
 Mod for game mindustry that extend your ui with some useful things
 
+You can easily disable any of the following features in the settings if you don't like it.
+
+![settings](https://cdn.discordapp.com/attachments/606977691757051920/952553541459935242/Mindustry_nvrv3mEOuY.gif)
+
 ### Units table
 
 Displays what units have every team on the map sorted by relative value

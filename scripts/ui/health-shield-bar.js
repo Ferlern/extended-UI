@@ -20,6 +20,7 @@ Events.on(WorldLoadEvent, (event) => {
 })
 
 Events.run(Trigger.draw, () => {
+    if (!Core.settings.getBool("eui-showUnitBar", true)) return;
     Groups.unit.each((unit) => {
         if (drawUnitHealthBar(unit, force)) {
             drawUnitShieldBar(unit, true, force);
@@ -30,8 +31,6 @@ Events.run(Trigger.draw, () => {
 });
 
 function drawUnitShieldBar(unit, offset, force) {
-    if (!settings.showUnitShield) return;
-
     let prevStatus = damaged.get(unit.id);
 
     let maxShield = 0;
@@ -57,7 +56,6 @@ function drawUnitShieldBar(unit, offset, force) {
     } else if (prevStatus.shield != value) {
         prevStatus.shield = value;
         prevStatus.time = Date.now();
-        prevStatus.time = Date.now();
     } 
     if (!prevStatus.maxShield) {
         prevStatus.maxShield = Math.max(unit.shield, maxShield);
@@ -78,8 +76,6 @@ function drawUnitShieldBar(unit, offset, force) {
 }
 
 function drawUnitHealthBar(unit, force) {
-    if (!settings.showUnitHealth) return;
-
     let value = unit.health / unit.maxHealth;
     let prevStatus = damaged.get(unit.id);
 

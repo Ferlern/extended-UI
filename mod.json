@@ -1,9 +1,9 @@
 {
     "name": "extended-ui",
     "displayName": "[orange]extended[gold] UI",
-    "author": "[gold][SG][white] Визя",
-    "description": "Extend your ui with some useful things",
-    "version": "0.2",
+    "author": "wizer",
+    "description": "Extend your ui with some useful things.\n\nYou can easily disable any of the mod features in the settings -> graphics -> extended UI.\n\nIf u have any bugs or ideas create an issue on github or contact me in discord: WiZeR1233#9336",
+    "version": "0.25",
     "minGameVersion": "120",
     "hidden": true
 }
