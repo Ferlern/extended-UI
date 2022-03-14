@@ -168,7 +168,7 @@ function setMarker() {
             t.setBackground(unitsUiVisible ? Styles.black3 : Styles.none);
             prevUnitsUiVisible = unitsUiVisible;
         }
-    }).top().left().get();
+    }).name("unit-table").top().left().get();
     contentTable.visibility = () => isBuilded;
 }
 
