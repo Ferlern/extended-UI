@@ -120,8 +120,6 @@ function setMarker() {
 function isRebuildNeeded() {
     if (!isBuilded) return true;
 
-    
-
     if (!oldColumns || !oldRows || !oldSize) {
         oldRows = rows;
         oldColumns = columns;
