@@ -81,12 +81,13 @@ function showEditImageDialog(name) {
         editImageDialog.cont.pane(table => {
             for (let image of Object.entries(images)) {
                 const setted_name = image[0];
-                table.button(image[1], Styles.cleari, () => {
+                let imageButton = table.button(image[1], Styles.cleari, () => {
                     Vars.ui.announce("setted as " + setted_name);
                     Core.settings.put(name, setted_name);
                     
                     rebuildTable()
-                }).size(48).pad(4);
+                }).size(48).pad(4).get();
+                imageButton.resizeImage(48*0.8);
         
                 if (++r % 8 == 0) table.row();
             }
