@@ -17,6 +17,10 @@ let oldRows;
 let oldColumns;
 let oldSize;
 
+//for mobile version
+let lastTaped;
+let lastTapTime;
+
 Events.on(ClientLoadEvent, () => {
 
     setCategoryNameDialog = new BaseDialog("New category name");
@@ -27,8 +31,8 @@ Events.on(ClientLoadEvent, () => {
 
             Core.settings.put("category" + currentCategory + "name", text);
             rebuildTable();
-        });
-    });
+        }).growX();
+    }).size(320, 320);
 });
 
 Events.run(Trigger.update, () => {
@@ -72,6 +76,8 @@ function showEditSchematicButtonDialog(currentCategory, column, row) {
 }
 
 function showEditImageDialog(name) {
+    let size = Vars.mobile ? 320 : 640
+
     const editImageDialog = new BaseDialog("Select image");
     editImageDialog.addCloseButton();   
 
@@ -91,7 +97,7 @@ function showEditImageDialog(name) {
         
                 if (++r % 8 == 0) table.row();
             }
-        }).size(640, 640);
+        }).size(size, size);
     }
 
     editImageDialog.show();
@@ -101,13 +107,13 @@ function showEditSchematicDialog(currentCategory, column, row) {
     let setSchematicDialog = new BaseDialog("Insert schematic name");
     setSchematicDialog.addCloseButton();
     setSchematicDialog.cont.pane(table => {
-        table.labelWrap("Insert schematic name").width(150);
+        table.labelWrap("Insert schematic name").growX();
         table.row();
         table.field(Core.settings.getString(getSchematicString(currentCategory, column, row), ""), text => {
             Core.settings.put(getSchematicString(currentCategory, column, row), text);
             rebuildTable();
-        });
-    }).width(300);
+        }).growX();
+    }).size(Core.graphics.getWidth()/2, 640);
     setSchematicDialog.show();
 }
 
@@ -160,13 +166,25 @@ function buildTable() {
             b.setDisabled(false);
         }).width(categoryButtonSize).height(categoryButtonSize).tooltip(getCategoryTooltip(index)).get();
         imageButton.resizeImage(categoryButtonSize*0.8);
-        imageButton.clicked(Packages.arc.input.KeyCode.mouseRight, run(() => showEditImageDialog("category" + index + "image")));
+        if (!Vars.mobile) {
+            imageButton.clicked(Packages.arc.input.KeyCode.mouseRight, run(() => showEditImageDialog("category" + index + "image")));
+        } else {
+            imageButton.clicked(run(() => {
+                if (mobileDoubleTap("category" + index + "image")) {
+                    showEditImageDialog("category" + index + "image");
+                    // Clicks on label from the phone impossible? so this is here
+                    setCategoryNameDialog.show();
+                }
+            }));
+        }
     }
 
     wrapped.row();
     let categoryLabel = wrapped.labelWrap(getCategoryLabelText()).width(categoryButtonSize*columns).padTop(6).padBottom(6).get();
     categoryLabel.setAlignment(Align.center);
-    categoryLabel.clicked(Packages.arc.input.KeyCode.mouseRight, run(() => setCategoryNameDialog.show()));
+    if (!Vars.mobile) {
+        categoryLabel.clicked(Packages.arc.input.KeyCode.mouseRight, run(() => setCategoryNameDialog.show()));
+    }
 
     wrapped.row();
     const schematicButtonsTable = wrapped.table().get();
@@ -182,7 +200,15 @@ function buildTable() {
                 b.setDisabled(false);
             }).width(schematicButtonSize).height(schematicButtonSize).pad(1).tooltip(getSchematicTooltip(schematic)).get();
             imageButton.resizeImage(schematicButtonSize*0.6);
-            imageButton.clicked(Packages.arc.input.KeyCode.mouseRight, run(() => showEditSchematicButtonDialog(currentCategory, column, row)));
+            if (!Vars.mobile) {
+                imageButton.clicked(Packages.arc.input.KeyCode.mouseRight, run(() => showEditSchematicButtonDialog(currentCategory, column, row)));
+            } else {
+                imageButton.clicked(run(() => {
+                    if (mobileDoubleTap(getSchematicString(currentCategory, column, row))) {
+                        showEditSchematicButtonDialog(currentCategory, column, row)
+                    }
+                }));
+            }
         }
         schematicButtonsTable.row();
     }
@@ -202,7 +228,15 @@ function getCategoryTooltip(categoryId) {
 }
 
 function getCategoryLabelText() {
-    return Core.settings.getString("category" + currentCategory + "name", "Right click to set");
+    let defaultText;
+
+    if (Vars.mobile) {
+        defaultText = "Double tap on pencil to set name AND image"
+    } else {
+        defaultText = "Right click to set"
+    }
+
+    return Core.settings.getString("category" + currentCategory + "name", defaultText);
 }
 
 function getCategoryImage(categoryId) {
@@ -234,4 +268,14 @@ function findSchematic(category, column, row) {
 		}
 	});
     return schem;
+}
+
+function mobileDoubleTap(name) {
+    if (lastTaped == name && Date.now() - lastTapTime < 250) {
+        return true;
+    } else {
+        lastTaped = name;
+        lastTapTime = Date.now();
+        return false;
+    }
 }

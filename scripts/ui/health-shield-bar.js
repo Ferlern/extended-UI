@@ -11,13 +11,13 @@ const unitBarDisplayTime = settings.unitBarDisplayTime;
 const unitBarFadeTime = settings.unitBarFadeTime;
 const unitBarTotalDisplayTime = unitBarDisplayTime + unitBarFadeTime;
 
-const damaged = new Map();
+let damaged = new Map();
 
 const force = false;
 
-Events.on(WorldLoadEvent, (event) => {
-    damaged.clear();
-})
+Events.on(EventType.WorldLoadEvent, () => {
+    damaged = new Map();
+});
 
 Events.run(Trigger.draw, () => {
     if (!Core.settings.getBool("eui-showUnitBar", true)) return;
