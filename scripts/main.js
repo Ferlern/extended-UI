@@ -1,10 +1,21 @@
-require("extended-ui/utils/polyfill");
+const output = require("extended-ui/utils/output-wrapper");
 
-require("extended-ui/ui/settings-ui");
-require("extended-ui/ui/schematics-table-ui");
-require("extended-ui/ui/units-table-ui");
-require("extended-ui/ui/power-ui");
-require("extended-ui/ui/progress-bar");
-require("extended-ui/ui/health-shield-bar");
+const modules = [
+    "utils/polyfill",
+    "ui/settings-ui",
+    "ui/schematics-table-ui",
+    "ui/units-table-ui",
+    "ui/power-ui",
+    "ui/progress-bar",
+    "ui/health-shield-bar",
+    "other/extend-zoom",
+]
 
-require("extended-ui/other/extend-zoom");
+for (let module of modules) {
+    try {
+        require("extended-ui/" + module);
+    } catch(e) {
+        log("Extended UI: can't load " + module + "\nIn " + e.fileName + "#" + e.lineNumber + " " + e.name + ': ' + e.message);
+        output.debug("Extended UI: can't load " + module + "\nPlease report this bug on GitHub");
+    }
+}
