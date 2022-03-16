@@ -5,6 +5,7 @@ const modules = [
     "ui/settings-ui",
     "ui/schematics-table-ui",
     "ui/units-table-ui",
+    "ui/block-info-ui",
     "ui/power-ui",
     "ui/progress-bar",
     "ui/health-shield-bar",

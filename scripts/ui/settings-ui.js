@@ -20,6 +20,7 @@ Events.on(EventType.ClientLoadEvent, () => {
         contentTable.checkPref("eui-showFactoryProgress", true);
         contentTable.checkPref("eui-showUnitBar", true);
         contentTable.checkPref("eui-ShowUnitTable", true);
+        contentTable.checkPref("eui-ShowBlockInfo", true);
         contentTable.checkPref("eui-ShowSchematicsTable", true);
         contentTable.sliderPref("eui-SchematicsTableRows", 4, 2, 10, 1, i => i);
         contentTable.sliderPref("eui-SchematicsTableColumns", 5, 4, 8, 1, i => i);

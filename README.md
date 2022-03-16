@@ -36,3 +36,8 @@ Factory progress bar
 Unit health & shield bars
 
 ![health-shield-bar](https://cdn.discordapp.com/attachments/606977691757051920/951889454824579092/unknown.png)
+
+Shows additional information about enemy blocks
+
+![enemy-resources](https://cdn.discordapp.com/attachments/606977691757051920/953751760273543238/unknown.png)
+![enemy-power](https://cdn.discordapp.com/attachments/606977691757051920/953751888044625991/unknown.png)

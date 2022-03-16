@@ -91,7 +91,7 @@ function showEditImageDialog(name) {
                     Vars.ui.announce("setted as " + setted_name);
                     Core.settings.put(name, setted_name);
                     
-                    rebuildTable()
+                    rebuildTable();
                 }).size(48).pad(4).get();
                 imageButton.resizeImage(48*0.8);
         
@@ -163,7 +163,6 @@ function buildTable() {
             currentCategory = index;
         })).update(b => {
             b.setChecked(currentCategory == index);
-            b.setDisabled(false);
         }).width(categoryButtonSize).height(categoryButtonSize).tooltip(getCategoryTooltip(index)).get();
         imageButton.resizeImage(categoryButtonSize*0.8);
         if (!Vars.mobile) {

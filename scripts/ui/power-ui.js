@@ -1,4 +1,6 @@
 const iterationTools = require("extended-ui/utils/iteration-tools");
+const formattingUtil = require("extended-ui/utils/formatting");
+const visibleUtil = require("extended-ui/utils/visible");
 
 const powerBarDefaultWidth = 300;
 const powerBarDefaultHeight = 25;
@@ -26,12 +28,13 @@ Events.run(Trigger.update, () => {
 
             if (!newGraphs.includes(graph)) {
 
-                // storing more than 100 graphs can provide some lags
-                if (newGraphs.length < 100) newGraphs.push(graph);
 
                 newStoredNetPower += graph.getBatteryStored();
                 newMaxNetPower += graph.getTotalBatteryCapacity();
                 newCurrentNetPower += graph.getPowerBalance();
+
+                // storing more than 100 graphs can provide some lags
+                if (graph.getPowerBalance() && newGraphs.length < 100) newGraphs.push(graph);
             }
         }
     }
@@ -57,8 +60,8 @@ Events.run(Trigger.update, () => {
     graphs = newGraphs;
 });
 
-Events.on(ClientLoadEvent, event => {
-    let powerBar = new Bar(prov(() => powerToString()), prov(() => Pal.accent), floatp(() => currentPowerStatus()));
+Events.on(ClientLoadEvent, () => {
+    let powerBar = new Bar(prov(() => formattingUtil.powerToString(currentNetPower, graphs)), prov(() => Pal.accent), floatp(() => currentPowerStatus()));
 
     if (Version.number < 7) {
         coreItems = Vars.ui.hudGroup.find("coreitems");
@@ -68,7 +71,7 @@ Events.on(ClientLoadEvent, event => {
     } else {
         Vars.ui.hudGroup.fill(cons(t => {
             t.add(powerBar).width(powerBarDefaultWidth).height(powerBarDefaultHeight).visible(() => {
-                return (powerBarVisible());
+                return (powerBarVisible() && visibleUtil.isHudVisible());
             });
             t.top().right().marginRight(160).marginTop(10);
             t.pack();
@@ -85,21 +88,4 @@ function currentPowerStatus() {
 
 function powerBarVisible() {
     return Core.settings.getBool("eui-showPowerBar", true) && (Boolean(storedNetPower) || Boolean(currentNetPower)); 
-}
-
-function powerToString() {
-    let num = Math.round(currentNetPower*60); 
-
-    let graphString = graphs.length > 1 ? " (sep " + graphs.length + ')' : '';
-    let sign = num > 0 ? '+' : '';
-    let color = num >= 0 ? '[stat]' : '[red]';
-    let powerString;
-
-    let power = Math.floor(Math.log(Math.abs(num)) / Math.log(1000)) - 1;
-    if (power > 0) {
-        powerString = num.toString().slice(0, -3*power) + 'k'.repeat(power);
-    } else {
-        powerString = num.toString();
-    }
-    return color + sign + powerString + '[white]' + graphString;
 }
