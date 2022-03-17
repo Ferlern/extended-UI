@@ -13,24 +13,11 @@ const unitBarTotalDisplayTime = unitBarDisplayTime + unitBarFadeTime;
 
 let damaged = new Map();
 
-const force = false;
-
 Events.on(EventType.WorldLoadEvent, () => {
     damaged = new Map();
 });
 
-Events.run(Trigger.draw, () => {
-    if (!Core.settings.getBool("eui-showUnitBar", true)) return;
-    Groups.unit.each((unit) => {
-        if (drawUnitHealthBar(unit, force)) {
-            drawUnitShieldBar(unit, true, force);
-        } else {
-            drawUnitShieldBar(unit, false, force);
-        }
-    });
-});
-
-function drawUnitShieldBar(unit, offset, force) {
+exports.drawUnitShieldBar = function(unit, offset, force) {
     let prevStatus = damaged.get(unit.id);
 
     let maxShield = 0;
@@ -75,7 +62,7 @@ function drawUnitShieldBar(unit, offset, force) {
     }));
 }
 
-function drawUnitHealthBar(unit, force) {
+exports.drawUnitHealthBar = function(unit, force) {
     let value = unit.health / unit.maxHealth;
     let prevStatus = damaged.get(unit.id);
 

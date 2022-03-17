@@ -33,7 +33,7 @@ Events.run(Trigger.update, () => {
 
     let build = mouseTile.build;
 
-    if (!build || build.team == Vars.player.team()) {
+    if (!build) {
         if (isBuilded) {
             clearTable();
         }
@@ -63,7 +63,9 @@ function clearTable() {
 }
 
 function buildTable(build) {
-    if (build.power) {
+    let isPlayerTeam = build.team == Vars.player.team();
+
+    if (build.power && !isPlayerTeam) {
         const powerTable = contentTable.table().get();
         const graph = build.power.graph;
 
@@ -78,7 +80,7 @@ function buildTable(build) {
         if (maxNetPower) {
             powerTable.label(() => "Stored: " + Math.round(storedNetPower/maxNetPower*100) + "%");
         }
-    } else if (build.items) {
+    } else if (build.items && !isPlayerTeam || build.items && build.items.total() <= 20) {
         const resourcesTable = contentTable.table().get();
         let i = 0;
         build.items.each((item,amount) => {

@@ -7,8 +7,8 @@ const modules = [
     "ui/units-table-ui",
     "ui/block-info-ui",
     "ui/power-ui",
-    "ui/progress-bar",
-    "ui/health-shield-bar",
+    "blocks/progress-bar",
+    "units/draw-cycle",
     "other/extend-zoom",
 ]
 
