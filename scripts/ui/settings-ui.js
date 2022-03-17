@@ -25,6 +25,8 @@ Events.on(EventType.ClientLoadEvent, () => {
         contentTable.sliderPref("eui-SchematicsTableRows", 4, 2, 10, 1, i => i);
         contentTable.sliderPref("eui-SchematicsTableColumns", 5, 4, 8, 1, i => i);
         contentTable.sliderPref("eui-SchematicsTableButtonSize", 30, 20, 80, 5, i => i);
+        contentTable.checkPref("eui-TrackPlayerCursor", false);
+        contentTable.checkPref("eui-TrackLogicControl", false);
 
         return contentTable;
     })());

@@ -41,3 +41,8 @@ Shows additional information about enemy blocks
 
 ![enemy-resources](https://cdn.discordapp.com/attachments/606977691757051920/953751760273543238/unknown.png)
 ![enemy-power](https://cdn.discordapp.com/attachments/606977691757051920/953751888044625991/unknown.png)
+
+Tracks enemy cursor & what controls units
+
+![enemy-cursor](https://cdn.discordapp.com/attachments/606977691757051920/954038645420068934/unknown.png)
+![logic-line](https://cdn.discordapp.com/attachments/606977691757051920/954039066305888326/unknown.png)
