@@ -3,6 +3,7 @@
 Mod for game mindustry that extend your ui with some useful things
 
 You can easily disable any of the following features in the settings if you don't like it.
+(if you have low fps with a large number of units, turn off health bars)
 
 ![settings](https://cdn.discordapp.com/attachments/606977691757051920/952553541459935242/Mindustry_nvrv3mEOuY.gif)
 
@@ -25,6 +26,16 @@ Shows global network status. Also makes warning about net separating
 ![power-bar](https://cdn.discordapp.com/attachments/606977691757051920/950107054088015952/unknown.png)
 ![power-warning](https://cdn.discordapp.com/attachments/606977691757051920/950106865902182480/unknown.png)
 
+### Testing
+
+Shows buildings effectiveness for testing schemes (WIP)
+
+![buildings-effectiveness](https://cdn.discordapp.com/attachments/606977691757051920/954434576644731000/unknown.png)
+
+Shows which processor controls units for testing logic
+
+![logic-line](https://cdn.discordapp.com/attachments/606977691757051920/954039066305888326/unknown.png)
+
 ### Other
 
 Extends min and max zoom limits
@@ -42,7 +53,6 @@ Shows additional information about enemy blocks
 ![enemy-resources](https://cdn.discordapp.com/attachments/606977691757051920/953751760273543238/unknown.png)
 ![enemy-power](https://cdn.discordapp.com/attachments/606977691757051920/953751888044625991/unknown.png)
 
-Tracks enemy cursor & what controls units
+Tracks enemy cursor
 
 ![enemy-cursor](https://cdn.discordapp.com/attachments/606977691757051920/954038645420068934/unknown.png)
-![logic-line](https://cdn.discordapp.com/attachments/606977691757051920/954039066305888326/unknown.png)
