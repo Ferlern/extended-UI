@@ -18,6 +18,6 @@ for (let module of modules) {
         require("extended-ui/" + module);
     } catch(e) {
         log("Extended UI: can't load " + module + "\nIn " + e.fileName + "#" + e.lineNumber + " " + e.name + ': ' + e.message);
-        output.debug("Extended UI: can't load " + module + "\nPlease report this bug on GitHub");
+        output.debug(Core.bundle.format("eui.load-error", module));
     }
 }

@@ -88,11 +88,11 @@ function buildTable(build) {
         const currentNetPower = graph.getPowerBalance();
 
         powerTable.label(() => {
-            return "Power: " + formattingUtil.powerToString(currentNetPower, []);
+            return Core.bundle.get("block-info.power") + ": " + formattingUtil.powerToString(currentNetPower, []);
         })
         powerTable.row();
         if (maxNetPower) {
-            powerTable.label(() => "Stored: " + Math.round(storedNetPower/maxNetPower*100) + "%");
+            powerTable.label(() => Core.bundle.get("block-info.stored") + ": " + Math.round(storedNetPower/maxNetPower*100) + "%");
         }
     } else if (build.items && build.items.total() > 0 && (!isPlayerTeam || build.items.total() <= 20)) {
         const resourcesTable = contentTable.table().get();

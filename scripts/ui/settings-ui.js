@@ -1,9 +1,9 @@
 Events.on(EventType.ClientLoadEvent, () => {
     const settings = Vars.ui.settings.graphics;
     settings.row();
-    settings.button("Extended UI", Styles.defaultt, () => extendedUIDialogSettings.show()).width(240).height(50);
+    settings.button(Core.bundle.get("eui.name"), Styles.defaultt, () => extendedUIDialogSettings.show()).width(240).height(50);
     
-    const extendedUIDialogSettings = new BaseDialog("Extended UI settings");
+    const extendedUIDialogSettings = new BaseDialog(Core.bundle.get("eui.settings"));
     extendedUIDialogSettings.addCloseButton();
     extendedUIDialogSettings.buttons.defaults().size(240, 60);
 

@@ -23,7 +23,7 @@ let lastTapTime;
 
 Events.on(ClientLoadEvent, () => {
 
-    setCategoryNameDialog = new BaseDialog("New category name");
+    setCategoryNameDialog = new BaseDialog(Core.bundle.get("schematics-table.dialog.change-cathegory-name.title"));
     setCategoryNameDialog.addCloseButton();
     setCategoryNameDialog.cont.pane(table => {
         table.field(null, text => {
@@ -58,15 +58,15 @@ Events.run(Trigger.update, () => {
 });
 
 function showEditSchematicButtonDialog(currentCategory, column, row) {
-    let editSchematicButtonDialog = new BaseDialog("Select action");
+    let editSchematicButtonDialog = new BaseDialog(Core.bundle.get("schematics-table.dialog.edit-schematic-button.title"));
     editSchematicButtonDialog.addCloseButton();
     editSchematicButtonDialog.cont.pane(table => {
-        table.button("Set schematic", Styles.defaultt, () => {
+        table.button(Core.bundle.get("schematics-table.dialog.edit-schematic-button.set-schematic"), Styles.defaultt, () => {
             showEditSchematicDialog(currentCategory, column, row);
             editSchematicButtonDialog.hide();
         }).width(240).height(50);
         table.row();
-        table.button("Set image", Styles.defaultt, () => {
+        table.button(Core.bundle.get("schematics-table.dialog.edit-schematic-button.set-image"), Styles.defaultt, () => {
             showEditImageDialog(getSchematicString(currentCategory, column, row) + "image");
             editSchematicButtonDialog.hide();
         }).padTop(10).width(240).height(50);
@@ -78,7 +78,7 @@ function showEditSchematicButtonDialog(currentCategory, column, row) {
 function showEditImageDialog(name) {
     let size = Vars.mobile ? 320 : 640
 
-    const editImageDialog = new BaseDialog("Select image");
+    const editImageDialog = new BaseDialog(Core.bundle.get("schematics-table.dialog.change-image.title"));
     editImageDialog.addCloseButton();   
 
     let iconsAndSprites = [iconsUtil.getIcons(), iconsUtil.getSprites()];
@@ -88,7 +88,7 @@ function showEditImageDialog(name) {
             for (let image of Object.entries(images)) {
                 const setted_name = image[0];
                 let imageButton = table.button(image[1], Styles.cleari, () => {
-                    Vars.ui.announce("setted as " + setted_name);
+                    Vars.ui.announce(Core.bundle.get("schematics-table.dialog.change-image.setted-announce-text") + " " + setted_name);
                     Core.settings.put(name, setted_name);
                     
                     rebuildTable();
@@ -104,10 +104,11 @@ function showEditImageDialog(name) {
 }
 
 function showEditSchematicDialog(currentCategory, column, row) {
-    let setSchematicDialog = new BaseDialog("Insert schematic name");
+    let text = Core.bundle.get("schematics-table.dialog.change-schematic.title")
+    let setSchematicDialog = new BaseDialog(text);
     setSchematicDialog.addCloseButton();
     setSchematicDialog.cont.pane(table => {
-        table.labelWrap("Insert schematic name").growX();
+        table.labelWrap(text).growX();
         table.row();
         table.field(Core.settings.getString(getSchematicString(currentCategory, column, row), ""), text => {
             Core.settings.put(getSchematicString(currentCategory, column, row), text);
@@ -223,16 +224,16 @@ function clearTable() {
 }
 
 function getCategoryTooltip(categoryId) {
-    return Core.settings.getString("category" + categoryId + "name", "Category name not set yet");
+    return Core.settings.getString("category" + categoryId + "name", Core.bundle.get("schematics-table.default-cathegory-tooltip"));
 }
 
 function getCategoryLabelText() {
     let defaultText;
 
     if (Vars.mobile) {
-        defaultText = "Double tap on pencil to set name AND image"
+        defaultText = Core.bundle.get("schematics-table.default-cathegory-mobile-name");
     } else {
-        defaultText = "Right click to set"
+        defaultText = Core.bundle.get("schematics-table.default-cathegory-desktop-name");
     }
 
     return Core.settings.getString("category" + currentCategory + "name", defaultText);
@@ -252,9 +253,9 @@ function getSchematicString(category, column, row) {
 
 function getSchematicTooltip(schematic) {
     if (schematic) {
-        return "Use " + schematic.name();
+        return Core.bundle.get("schematics-table.use-schematic") + " " + schematic.name();
     } else {
-        return "Right click to set";
+        Core.bundle.get("schematics-table.default-cathegory-desktop-name");
     }
 }
 

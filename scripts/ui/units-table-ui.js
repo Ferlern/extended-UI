@@ -120,17 +120,17 @@ function buildTable() {
 
     unitTableButtons.button(Icon.play, Styles.defaulti, run( () => {
         unitsUiVisible = !unitsUiVisible;
-    })).width(buttonSize).height(buttonSize).pad(1).name("show").tooltip("Show or hide units table");
+    })).width(buttonSize).height(buttonSize).pad(1).name("show").tooltip(Core.bundle.get("units-table.button.hide.tooltip"));
 
     let imageButton = unitTableButtons.button(new TextureRegionDrawable(Icon.players), Styles.defaulti, run( () => {
         hideCoreUnits = !hideCoreUnits;
-    })).update(b => b.setChecked(hideCoreUnits)).width(buttonSize).height(buttonSize).pad(1).name("core-units").tooltip("Hide core defender").get();
+    })).update(b => b.setChecked(hideCoreUnits)).width(buttonSize).height(buttonSize).pad(1).name("core-units").tooltip(Core.bundle.get("units-table.button.core-units.tooltip")).get();
     imageButton.visibility = () => unitsUiVisible;
     imageButton.resizeImage(buttonSize*0.6);
 
     imageButton = unitTableButtons.button(new TextureRegionDrawable(Icon.github), Styles.defaulti, run( () => {
         hideSupportUnits = !hideSupportUnits;
-    })).update(b => b.setChecked(hideSupportUnits)).width(buttonSize).height(buttonSize).pad(1).name("support-units").tooltip("Hide support units").get();
+    })).update(b => b.setChecked(hideSupportUnits)).width(buttonSize).height(buttonSize).pad(1).name("support-units").tooltip(Core.bundle.get("units-table.button.support-units.tooltip")).get();
     imageButton.visibility = () => unitsUiVisible;
     imageButton.resizeImage(buttonSize*0.6);
 
