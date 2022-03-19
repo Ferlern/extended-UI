@@ -161,14 +161,16 @@ function isRebuildNeeded() {
 }
 
 function setMarker() {
+    const contentTableStyle = Version.number > 6 ? Tex.buttonEdge4 : Styles.black3
+
     overlayMarker = Vars.ui.hudGroup.find("waves");
     overlayMarker.row();
-    contentTable = overlayMarker.table(Styles.black3).update((t) => {
+    contentTable = overlayMarker.table(contentTableStyle).update((t) => {
         if (prevUnitsUiVisible != unitsUiVisible) {
-            t.setBackground(unitsUiVisible ? Styles.black3 : Styles.none);
+            t.setBackground(unitsUiVisible ? contentTableStyle : Styles.none);
             prevUnitsUiVisible = unitsUiVisible;
         }
-    }).name("unit-table").top().left().get();
+    }).name("unit-table").top().left().marginLeft(0).marginBottom(0).marginTop(0).get();
     contentTable.visibility = () => isBuilded;
 }
 
