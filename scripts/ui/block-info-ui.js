@@ -2,6 +2,9 @@ const visibleUtil = require("extended-ui/utils/visible");
 const formattingUtil = require("extended-ui/utils/formatting");
 let contentTable;
 
+let hovered = null;
+let isPlayerTeam = null;
+
 let isBuilded = false;
 
 Events.on(ClientLoadEvent, () => {
@@ -18,6 +21,7 @@ Events.run(Trigger.update, () => {
         if (isBuilded) {
             clearTable();
         }
+        hovered = null;
         return;
     }
 
@@ -37,13 +41,25 @@ Events.run(Trigger.update, () => {
         if (isBuilded) {
             clearTable();
         }
+        hovered = null;
         return;
     }
+
+    isPlayerTeam = build.team == Vars.player.team();
+    hovered = build;
 
     if (isRebuildNeeded(build)) {
         rebuildTable(build);
     }
 });
+
+Events.run(Trigger.draw, () => {
+    if (hovered && hovered.range && !isPlayerTeam) {
+        Draw.draw(Layer.overlayUI+0.01, run(() => {
+            Drawf.dashCircle(hovered.x, hovered.y, hovered.range(), hovered.team.color);
+        }));
+    }
+})
 
 function isRebuildNeeded(build) {
     //Useless? Should be rebuilded every frame to get last info about hovered block
@@ -63,8 +79,6 @@ function clearTable() {
 }
 
 function buildTable(build) {
-    let isPlayerTeam = build.team == Vars.player.team();
-
     if (build.power && !isPlayerTeam) {
         const powerTable = contentTable.table().get();
         const graph = build.power.graph;
@@ -80,7 +94,7 @@ function buildTable(build) {
         if (maxNetPower) {
             powerTable.label(() => "Stored: " + Math.round(storedNetPower/maxNetPower*100) + "%");
         }
-    } else if (build.items && !isPlayerTeam || build.items && build.items.total() <= 20) {
+    } else if (build.items && build.items.total() > 0 && (!isPlayerTeam || build.items.total() <= 20)) {
         const resourcesTable = contentTable.table().get();
         let i = 0;
         build.items.each((item,amount) => {
@@ -93,6 +107,13 @@ function buildTable(build) {
                 resourcesTable.row();
             }
         });
+    } else if (typeof build.config() == "string" && !isPlayerTeam) {
+        const configTable = contentTable.table().get();
+        configTable.label(() => {
+            return build.config();
+        })
+    } else {
+        return;
     }
     isBuilded = true;
 }
