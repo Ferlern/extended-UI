@@ -2,6 +2,7 @@ const iconsUtil = require("extended-ui/utils/icons");
 
 let isBuilded = false;
 let contentTable;
+let previewTable;
 let setCategoryNameDialog;
 
 let currentCategory = 0;
@@ -17,11 +18,19 @@ let oldRows;
 let oldColumns;
 let oldSize;
 
+let hovered = null;
+
 //for mobile version
 let lastTaped;
 let lastTapTime;
 
 Events.on(ClientLoadEvent, () => {
+    Vars.ui.hudGroup.fill(cons(t => {
+        previewTable = t.table(Styles.black3).get();
+        previewTable.visibility = () => previewTableVisibility();
+        t.center();
+        t.pack();
+    }));
 
     setCategoryNameDialog = new BaseDialog(Core.bundle.get("schematics-table.dialog.change-cathegory-name.title"));
     setCategoryNameDialog.addCloseButton();
@@ -54,6 +63,12 @@ Events.run(Trigger.update, () => {
 
     if (isRebuildNeeded()) {
         rebuildTable();
+    }
+
+    if (hovered && contentTable.hasMouse()) {
+        rebuildPreviewTable();
+    } else {
+        hovered = null;
     }
 });
 
@@ -199,13 +214,17 @@ function buildTable() {
             })).update(b => {
                 b.setDisabled(false);
             }).width(schematicButtonSize).height(schematicButtonSize).pad(1).tooltip(getSchematicTooltip(schematic)).get();
+
             imageButton.resizeImage(schematicButtonSize*0.6);
+            imageButton.hovered(run(() => {
+                hovered = schematic;
+            }));
             if (!Vars.mobile) {
                 imageButton.clicked(Packages.arc.input.KeyCode.mouseRight, run(() => showEditSchematicButtonDialog(currentCategory, column, row)));
             } else {
                 imageButton.clicked(run(() => {
                     if (mobileDoubleTap(getSchematicString(currentCategory, column, row))) {
-                        showEditSchematicButtonDialog(currentCategory, column, row)
+                        showEditSchematicButtonDialog(currentCategory, column, row);
                     }
                 }));
             }
@@ -221,6 +240,54 @@ function clearTable() {
 
     contentTable.clearChildren();
     isBuilded = false;
+}
+
+function rebuildPreviewTable() {
+    previewTable.clearChildren();
+
+    const requirements = hovered.requirements();
+    const powerConsumption = hovered.powerConsumption() * 60;
+    const powerProduction = hovered.powerProduction() * 60;
+    const core = Vars.player.core();
+
+    previewTable.add(new SchematicsDialog.SchematicImage(hovered)).maxSize(800);
+    previewTable.row();
+
+    previewTable.table(cons(requirementsTable => {
+        let i = 0;
+        requirements.each((item, amount) => {
+            requirementsTable.image(item.icon(Cicon.small)).left();
+            requirementsTable.label(() => {
+                if (core == null || Vars.state.rules.infiniteResources || core.items.has(item, amount)) return "[lightgray]" + amount;
+                return (core.items.has(item, amount) ? "[lightgray]" : "[scarlet]") + Math.min(core.items.get(item), amount) + "[lightgray]/" + amount;
+            }).padLeft(2).left().padRight(4);
+
+            if (++i % 4 == 0) {
+                requirementsTable.row();
+            }
+        });
+    }));
+
+    previewTable.row();
+    
+    if (powerConsumption || powerProduction) {
+        previewTable.table(cons(powerTable => {
+
+            if (powerProduction) {
+                powerTable.image(Icon.powerSmall).color(Pal.powerLight).padRight(3);
+                powerTable.add("+" + Strings.autoFixed(powerProduction, 2)).color(Pal.powerLight).left();
+
+                if (powerConsumption) {
+                    powerTable.add().width(15);
+                }
+            }
+
+            if (powerConsumption) {
+                powerTable.image(Icon.powerSmall).color(Pal.remove).padRight(3);
+                powerTable.add("-" + Strings.autoFixed(powerConsumption, 2)).color(Pal.remove).left();
+            }
+        }));
+    }
 }
 
 function getCategoryTooltip(categoryId) {
@@ -278,4 +345,8 @@ function mobileDoubleTap(name) {
         lastTapTime = Date.now();
         return false;
     }
+}
+
+function previewTableVisibility() {
+    return Core.settings.getBool("eui-ShowSchematicsPreview", true) && contentTable.visible && Boolean(hovered);
 }
