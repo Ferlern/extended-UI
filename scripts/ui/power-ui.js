@@ -1,6 +1,5 @@
 const iterationTools = require("extended-ui/utils/iteration-tools");
 const formattingUtil = require("extended-ui/utils/formatting");
-const visibleUtil = require("extended-ui/utils/visible");
 
 const powerBarDefaultWidth = 300;
 const powerBarDefaultHeight = 25;
@@ -71,7 +70,7 @@ Events.on(ClientLoadEvent, () => {
     } else {
         Vars.ui.hudGroup.fill(cons(t => {
             t.add(powerBar).width(powerBarDefaultWidth).height(powerBarDefaultHeight).visible(() => {
-                return (powerBarVisible() && visibleUtil.isHudVisible());
+                return (powerBarVisible() && Vars.ui.hudfrag.shown);
             });
             t.top().right().marginRight(160).marginTop(10);
             t.pack();

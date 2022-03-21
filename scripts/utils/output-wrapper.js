@@ -1,11 +1,37 @@
-exports.addInQueue = function(sender, properties) {
-    let size = queue.push(new QueueItem(sender, properties));
-    if (size > maxQueueSize) queue.shift();
-}
-
 exports.debug = function(text) {
     let properties = {showTime: 10};
     exports.addInQueue(() => (Vars.ui.announce(text, 10)), properties);
+}
+
+exports.ingameAlert = function(text, repetitions) {
+    let properties = {
+        showTime: 5,
+        repetitions: repetitions,
+        delayer() {
+            return !Vars.ui.hudfrag.shown;
+        },
+    };
+    exports.addInQueue(() => showToast(Icon.warning, text), properties);
+}
+
+exports.addInQueue = function(sender, properties) {
+    const queueItem = new QueueItem(sender, properties)
+
+    let repetitions = queueItem.repetitions;
+    if (repetitions) {
+        let itemRepeats = repeats[queueItem.name]; 
+
+        if (!itemRepeats) {
+            repeats[queueItem.name] = 1;
+        } else if (itemRepeats >= repetitions) {
+            return;
+        } else {
+            repeats[queueItem.name] += 1;
+        }
+    }
+
+    let size = queue.push(queueItem);
+    if (size > maxQueueSize) queue.shift();
 }
 
 Events.run(Trigger.update, () => {
@@ -43,17 +69,32 @@ function QueuePop() {
         return;
     }
 
-    let repetitions = item.repetitions;
-    if (repetitions) {
-        let itemRepeats = repeats[item.name]; 
-
-        if (!itemRepeats) {
-            repeats[item.name] = 1;
-        } else if (itemRepeats >= repetitions) {
-            return;
-        }
-    }
-
     nextTime = Date.now() + item.showTime*1000;
     return item;
+}
+
+// copied from https://github.com/QmelZ/hackustry/blob/master/scripts/libs/toast.js
+function showToast(icon, text){    
+    if(!icon || !text) return;
+    
+    let table = new Table(Tex.button);
+    table.update(() => {
+        if(!Vars.ui.hudfrag.shown) table.remove();
+    });
+    table.margin(12);
+    table.image(icon).pad(3);
+    table.add(text).wrap().width(280).get().setAlignment(Align.center, Align.center);
+    table.pack();
+    
+    let container = Core.scene.table();
+    Vars.state.isMenu() ? container.top().right().add(table) : container.top().add(table);
+    container.setTranslation(0, table.getPrefHeight());
+    container.actions(
+        Actions.translateBy(0, -table.getPrefHeight(), 1, Interp.fade),
+        Actions.delay(2.5),
+        Actions.run(() => container.actions(
+            Actions.translateBy(0, table.getPrefHeight(), 1, Interp.fade),
+            Actions.remove()
+        ))
+    );
 }

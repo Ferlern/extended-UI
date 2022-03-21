@@ -1,4 +1,3 @@
-const visibleUtil = require("extended-ui/utils/visible");
 const formattingUtil = require("extended-ui/utils/formatting");
 let contentTable;
 
@@ -119,5 +118,5 @@ function buildTable(build) {
 }
 
 function infoTableVisibility() {
-    return visibleUtil.isHudVisible() && isBuilded;
+    return Vars.ui.hudfrag.shown && isBuilded;
 }
