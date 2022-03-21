@@ -322,7 +322,7 @@ function getSchematicTooltip(schematic) {
     if (schematic) {
         return Core.bundle.get("schematics-table.use-schematic") + " " + schematic.name();
     } else {
-        Core.bundle.get("schematics-table.default-cathegory-desktop-name");
+        return Core.bundle.get("schematics-table.default-cathegory-desktop-name");
     }
 }
 
