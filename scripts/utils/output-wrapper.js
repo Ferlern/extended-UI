@@ -3,10 +3,9 @@ exports.debug = function(text) {
     exports.addInQueue(() => (Vars.ui.announce(text, 10)), properties);
 }
 
-exports.ingameAlert = function(text, repetitions) {
+exports.ingameAlert = function(text) {
     let properties = {
         showTime: 5,
-        repetitions: repetitions,
         delayer() {
             return !Vars.ui.hudfrag.shown;
         },
@@ -17,19 +16,6 @@ exports.ingameAlert = function(text, repetitions) {
 exports.addInQueue = function(sender, properties) {
     const queueItem = new QueueItem(sender, properties)
 
-    let repetitions = queueItem.repetitions;
-    if (repetitions) {
-        let itemRepeats = repeats[queueItem.name]; 
-
-        if (!itemRepeats) {
-            repeats[queueItem.name] = 1;
-        } else if (itemRepeats >= repetitions) {
-            return;
-        } else {
-            repeats[queueItem.name] += 1;
-        }
-    }
-
     let size = queue.push(queueItem);
     if (size > maxQueueSize) queue.shift();
 }
@@ -39,13 +25,12 @@ Events.run(Trigger.update, () => {
     if (item) {
         item.sender();
     }
-})
+});
 
 const maxQueueSize = 50;
 let nextTime = Date.now() + 10000;
 let id = 0;
 let queue = [];
-let repeats = {};
 
 function QueueItem(sender, properties) {
     this.id = ++id;
@@ -54,7 +39,6 @@ function QueueItem(sender, properties) {
     
     this.delayer = properties.delayer || (() => false);
     this.name = properties.name || null;
-    this.repetitions = properties.properties || 0;
     this.showTime = properties.showTime || 0;
 }
 

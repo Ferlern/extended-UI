@@ -21,6 +21,7 @@ Events.on(EventType.ClientLoadEvent, () => {
         contentTable.checkPref("eui-showUnitBar", true);
         contentTable.checkPref("eui-ShowUnitTable", true);
         contentTable.checkPref("eui-ShowBlockInfo", true);
+        // contentTable.checkPref("eui-ShowAlerts", true); WIP
         contentTable.checkPref("eui-ShowSchematicsTable", true);
         contentTable.checkPref("eui-ShowSchematicsPreview", true);
         contentTable.sliderPref("eui-SchematicsTableRows", 4, 2, 10, 1, i => i);
