@@ -4,12 +4,12 @@ const modules = [
     "utils/polyfill",
     "ui/settings-ui",
     "ui/schematics-table-ui",
-    "ui/units-table-ui",
-    "ui/block-info-ui",
     "ui/power-ui",
-    "blocks/progress-bar",
-    "blocks/efficiency",
-    "units/draw-cycle",
+    "ui/blocks/block-info-ui",
+    "ui/blocks/progress-bar",
+    "ui/blocks/efficiency",
+    "ui/units/units-table-ui",
+    "ui/units/draw-cycle",
     "other/extend-zoom",
 ]
 
