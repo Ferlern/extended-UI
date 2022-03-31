@@ -22,7 +22,7 @@ exports.getByName = function(name) {
     return exports.getIcons()[name] || exports.getSprites()[name] || new TextureRegionDrawable(Icon.pencil);
 }
 
-const spriteClasses = [Items, Liquids, UnitTypes, Blocks]
+const spriteClasses = [Items, Liquids, UnitTypes, StatusEffects, Blocks]
 let allIcons = {};
 let allSprites = {};
 
