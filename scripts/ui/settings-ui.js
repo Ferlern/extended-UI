@@ -31,6 +31,7 @@ Events.on(EventType.ClientLoadEvent, () => {
         contentTable.sliderPref("eui-EfficiencyTimer", 15, 10, 180, 5, i => i);
         contentTable.checkPref("eui-TrackPlayerCursor", false);
         contentTable.checkPref("eui-TrackLogicControl", false);
+        contentTable.sliderPref("eui-maxZoom", 10, 1, 10, 1, i => i);
 
         return contentTable;
     })());
