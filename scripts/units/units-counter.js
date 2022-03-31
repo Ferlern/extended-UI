@@ -45,3 +45,10 @@ exports.getUnitsValueTop = function(amountToDisplay, granulatiry, hideCoreUnits,
 
     return Array.from(top.entries()).sort((a, b) => b[1].value - a[1].value).slice(0, amountToDisplay);
 }
+
+exports.isDangerous = function(unit) {
+    let type = unit.type.toString();
+    if (coreUnits.includes(type)) return false;
+    if (supportUnits.includes(type)) return false;
+    return true;
+}

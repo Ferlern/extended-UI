@@ -1,3 +1,6 @@
+global.eui = {} // global mod object for fast access to important mod functions from console
+global.eui.relativeValue = require("extended-ui/utils/relative-value");
+
 const output = require("extended-ui/utils/output-wrapper");
 
 const modules = [
@@ -10,6 +13,8 @@ const modules = [
     "ui/blocks/efficiency",
     "ui/units/units-table-ui",
     "ui/units/draw-cycle",
+    "ui/alerts/losing-support",
+    "ui/alerts/under-attack",
     "other/extend-zoom",
 ]
 
