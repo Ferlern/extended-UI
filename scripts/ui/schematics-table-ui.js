@@ -25,12 +25,12 @@ let lastTaped;
 let lastTapTime;
 
 Events.on(ClientLoadEvent, () => {
-    Vars.ui.hudGroup.fill(cons(t => {
+    Vars.ui.hudGroup.fill(null, t => {
         previewTable = t.table(Styles.black3).get();
         previewTable.visibility = () => previewTableVisibility();
         t.center();
         t.pack();
-    }));
+    });
 
     setCategoryNameDialog = new BaseDialog(Core.bundle.get("schematics-table.dialog.change-cathegory-name.title"));
     setCategoryNameDialog.addCloseButton();
@@ -253,7 +253,7 @@ function rebuildPreviewTable() {
     previewTable.add(new SchematicsDialog.SchematicImage(hovered)).maxSize(800);
     previewTable.row();
 
-    previewTable.table(cons(requirementsTable => {
+    previewTable.table(null, requirementsTable => {
         let i = 0;
         requirements.each((item, amount) => {
             requirementsTable.image(item.icon(Cicon.small)).left();
@@ -266,12 +266,12 @@ function rebuildPreviewTable() {
                 requirementsTable.row();
             }
         });
-    }));
+    });
 
     previewTable.row();
     
     if (powerConsumption || powerProduction) {
-        previewTable.table(cons(powerTable => {
+        previewTable.table(null, powerTable => {
 
             if (powerProduction) {
                 powerTable.image(Icon.powerSmall).color(Pal.powerLight).padRight(3);
@@ -286,7 +286,7 @@ function rebuildPreviewTable() {
                 powerTable.image(Icon.powerSmall).color(Pal.remove).padRight(3);
                 powerTable.add("-" + Strings.autoFixed(powerConsumption, 2)).color(Pal.remove).left();
             }
-        }));
+        });
     }
 }
 

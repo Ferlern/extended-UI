@@ -7,12 +7,12 @@ let isPlayerTeam = null;
 let isBuilded = false;
 
 Events.on(ClientLoadEvent, () => {
-    Vars.ui.hudGroup.fill(cons(t => {
+    Vars.ui.hudGroup.fill(null, t => {
         contentTable = t.table(Styles.black3).margin(4).get();
         contentTable.visibility = () => infoTableVisibility();
         t.bottom().left();
         t.pack();
-    }));
+    });
 })
 
 Events.run(Trigger.update, () => {
