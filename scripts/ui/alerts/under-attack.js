@@ -2,8 +2,9 @@ const Alerts = require("extended-ui/ui/alerts/alert");
 const output = require("extended-ui/utils/output-wrapper");
 const unitsCounter = require("extended-ui/units/units-counter");
 const relativeValue = require("extended-ui/utils/relative-value");
+const drawTasks = require("extended-ui/utils/draw-tasks");
 
-const sendCooldown = 60000;
+const sendCooldown = 60 * 60 // 1 min;
 const searchSize = 36 * 8; // 36 blocks around destroyer
 const destroyerSearchSize = 80 * 8; // 80 blocks away from destroyed
 const AttackSizes = {
@@ -22,7 +23,7 @@ Events.on(EventType.WorldLoadEvent, () => {
 });
 
 let event = (event) => {
-    if (Time.time - 100 < lastCheckTime) return; // No more than 10 times per second. Reactor explosion can cause multiple useless checks
+    if (Time.time - 6 < lastCheckTime) return; // No more than 10 times per second. Reactor explosion can cause multiple useless checks
     if (Time.time - sendCooldown < lastCheckTime) return;
 
     const tile = event.tile;
@@ -48,7 +49,7 @@ let event = (event) => {
 
     for (let [name, value] of Object.entries(AttackSizes)) {
         if (currentAttackValue > value) {
-            output.ingameAlert(Core.bundle.get("alerts." + name + "-attack"));
+            output.ingameAlert(Core.bundle.get("alerts." + name + "-attack"), drawTasks.divergingCircles(x, y, {color: Color.red}));
             lastSendTime = Time.time;
             return;
         }

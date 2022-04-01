@@ -3,14 +3,17 @@ exports.debug = function(text) {
     exports.addInQueue(() => (Vars.ui.announce(text, 10)), properties);
 }
 
-exports.ingameAlert = function(text) {
+exports.ingameAlert = function(text, drawTask) {
     let properties = {
         showTime: 5,
         delayer() {
             return !Vars.ui.hudfrag.shown;
         },
     };
-    exports.addInQueue(() => showToast(Icon.warning, text), properties);
+    exports.addInQueue(() => {
+        showToast(Icon.warning, text);
+        if (drawTask) drawTask();
+    }, properties);
 }
 
 exports.addInQueue = function(sender, properties) {

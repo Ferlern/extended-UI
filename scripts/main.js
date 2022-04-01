@@ -1,5 +1,6 @@
 global.eui = {} // global mod object for fast access to important mod functions from console
 global.eui.relativeValue = require("extended-ui/utils/relative-value");
+global.eui.drawTasks = require("extended-ui/utils/draw-tasks");
 
 const output = require("extended-ui/utils/output-wrapper");
 
