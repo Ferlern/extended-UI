@@ -20,7 +20,7 @@ exports.getUnitsValueTop = function(amountToDisplay, granulatiry, hideCoreUnits,
         units = top.get(team.id).units;
 
         if (!units[unit.type]) {
-            units[unit.type] = {amount: 0};
+            units[unit.type] = {amount: 0, entity: unit};
         }
         units[unit.type].amount++;
     }

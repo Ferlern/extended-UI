@@ -3,7 +3,7 @@ importPackage(Packages.arc.util.pooling);
 const settings = require("extended-ui/settings");
 const iterationTools = require("extended-ui/utils/iteration-tools");
 const barBuilder = require("extended-ui/utils/bar-builder");
-const renderUtils = require("extended-ui/utils/render");
+const camera = require("extended-ui/utils/camera");
 
 const unitBarSize = settings.unitBarSize;
 
@@ -90,7 +90,7 @@ exports.drawUnitHealthBar = function(unit, force) {
 }
 
 function isBarNecessary(x, y, value, prevStatus, force) {
-    if (!renderUtils.inCamera(Core.camera, x, y)) return false;
+    if (!camera.isIn(x, y)) return false;
     if (value <= 0) return false;
     if (force) return true;
     if (value >= 1) return false;
