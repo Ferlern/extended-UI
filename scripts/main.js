@@ -17,6 +17,7 @@ const modules = [
     "ui/alerts/losing-support",
     "ui/alerts/under-attack",
     "other/extend-zoom",
+    "other/mine",
 ]
 
 for (let module of modules) {
