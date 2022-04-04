@@ -6,10 +6,10 @@ exports.drawCursor = function(player) {
     const cursorX = player.mouseX;
     const cursorY = player.mouseY;
 
-    Draw.draw(Layer.overlayUI+0.01, run(() => {
+    Draw.draw(Layer.overlayUI+0.01, () => {
         Lines.stroke(1, player.team().color);
         Draw.alpha(0.7);
         Lines.line(unitX, unitY, cursorX, cursorY);
         Draw.reset();
-    }));
+    });
 }

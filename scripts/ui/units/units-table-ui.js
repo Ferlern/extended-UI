@@ -88,7 +88,7 @@ Events.run(Trigger.draw, () => {
         return
     }
     
-    Draw.draw(Layer.overlayUI+0.01, run(() => {
+    Draw.draw(Layer.overlayUI+0.01, () => {
         let x;
         let y;
 
@@ -107,7 +107,7 @@ Events.run(Trigger.draw, () => {
         Draw.color(entity.team.color);
         Lines.line(x, y, entity.x, entity.y);
         if (distance > 80) barBuilder.drawLabel(text, x, y + 20, Color.white, true);
-    }));
+    });
 })
 
 Events.on(EventType.WorldLoadEvent, () => {
@@ -131,19 +131,19 @@ function buildTable() {
 
     let unitTableButtons = contentTable.table().top().left().margin(3).get();
 
-    unitTableButtons.button(Icon.play, Styles.defaulti, run(() => {
+    unitTableButtons.button(Icon.play, Styles.defaulti, () => {
         unitsUiVisible = !unitsUiVisible;
-    })).width(buttonSize).height(buttonSize).pad(1).name("show").tooltip(Core.bundle.get("units-table.button.hide.tooltip"));
+    }).width(buttonSize).height(buttonSize).pad(1).name("show").tooltip(Core.bundle.get("units-table.button.hide.tooltip"));
 
-    let imageButton = unitTableButtons.button(new TextureRegionDrawable(Icon.players), Styles.defaulti, run( () => {
+    let imageButton = unitTableButtons.button(new TextureRegionDrawable(Icon.players), Styles.defaulti, () => {
         hideCoreUnits = !hideCoreUnits;
-    })).update(b => b.setChecked(hideCoreUnits)).width(buttonSize).height(buttonSize).pad(1).name("core-units").tooltip(Core.bundle.get("units-table.button.core-units.tooltip")).get();
+    }).update(b => b.setChecked(hideCoreUnits)).width(buttonSize).height(buttonSize).pad(1).name("core-units").tooltip(Core.bundle.get("units-table.button.core-units.tooltip")).get();
     imageButton.visibility = () => unitsUiVisible;
     imageButton.resizeImage(buttonSize*0.6);
 
-    imageButton = unitTableButtons.button(new TextureRegionDrawable(Icon.github), Styles.defaulti, run( () => {
+    imageButton = unitTableButtons.button(new TextureRegionDrawable(Icon.github), Styles.defaulti, () => {
         hideSupportUnits = !hideSupportUnits;
-    })).update(b => b.setChecked(hideSupportUnits)).width(buttonSize).height(buttonSize).pad(1).name("support-units").tooltip(Core.bundle.get("units-table.button.support-units.tooltip")).get();
+    }).update(b => b.setChecked(hideSupportUnits)).width(buttonSize).height(buttonSize).pad(1).name("support-units").tooltip(Core.bundle.get("units-table.button.support-units.tooltip")).get();
     imageButton.visibility = () => unitsUiVisible;
     imageButton.resizeImage(buttonSize*0.6);
 

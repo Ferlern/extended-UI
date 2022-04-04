@@ -175,22 +175,22 @@ function buildTable() {
     const categoryButtonsTable = wrapped.table().get();
     for (let i = 0; i < columns; i++) {
         const index = i;
-        imageButton = categoryButtonsTable.button(getCategoryImage(index), Styles.clearToggleTransi, run(()=>{
+        imageButton = categoryButtonsTable.button(getCategoryImage(index), Styles.clearToggleTransi, ()=>{
             currentCategory = index;
-        })).update(b => {
+        }).update(b => {
             b.setChecked(currentCategory == index);
         }).width(categoryButtonSize).height(categoryButtonSize).tooltip(getCategoryTooltip(index)).get();
         imageButton.resizeImage(categoryButtonSize*0.8);
         if (!Vars.mobile) {
-            imageButton.clicked(Packages.arc.input.KeyCode.mouseRight, run(() => showEditImageDialog("category" + index + "image")));
+            imageButton.clicked(Packages.arc.input.KeyCode.mouseRight, () => showEditImageDialog("category" + index + "image"));
         } else {
-            imageButton.clicked(run(() => {
+            imageButton.clicked(() => {
                 if (mobileDoubleTap("category" + index + "image")) {
                     showEditImageDialog("category" + index + "image");
                     // Clicks on label from the phone impossible? so this is here
                     setCategoryNameDialog.show();
                 }
-            }));
+            });
         }
     }
 
@@ -198,7 +198,7 @@ function buildTable() {
     let categoryLabel = wrapped.labelWrap(getCategoryLabelText()).width(categoryButtonSize*columns).padTop(6).padBottom(6).get();
     categoryLabel.setAlignment(Align.center);
     if (!Vars.mobile) {
-        categoryLabel.clicked(Packages.arc.input.KeyCode.mouseRight, run(() => setCategoryNameDialog.show()));
+        categoryLabel.clicked(Packages.arc.input.KeyCode.mouseRight, () => setCategoryNameDialog.show());
     }
 
     wrapped.row();
@@ -209,24 +209,24 @@ function buildTable() {
             const column = j;
             const schematic = findSchematic(currentCategory, column, row);
 
-            imageButton = schematicButtonsTable.button(getSchematicImage(column, row), Styles.defaulti, run(()=>{
+            imageButton = schematicButtonsTable.button(getSchematicImage(column, row), Styles.defaulti, ()=>{
                 if (schematic) Vars.control.input.useSchematic(schematic);
-            })).update(b => {
+            }).update(b => {
                 b.setDisabled(false);
             }).width(schematicButtonSize).height(schematicButtonSize).pad(1).tooltip(getSchematicTooltip(schematic)).get();
 
             imageButton.resizeImage(schematicButtonSize*0.6);
-            imageButton.hovered(run(() => {
+            imageButton.hovered(() => {
                 hovered = schematic;
-            }));
+            });
             if (!Vars.mobile) {
-                imageButton.clicked(Packages.arc.input.KeyCode.mouseRight, run(() => showEditSchematicButtonDialog(currentCategory, column, row)));
+                imageButton.clicked(Packages.arc.input.KeyCode.mouseRight, () => showEditSchematicButtonDialog(currentCategory, column, row));
             } else {
-                imageButton.clicked(run(() => {
+                imageButton.clicked(() => {
                     if (mobileDoubleTap(getSchematicString(currentCategory, column, row))) {
                         showEditSchematicButtonDialog(currentCategory, column, row);
                     }
-                }));
+                });
             }
         }
         schematicButtonsTable.row();

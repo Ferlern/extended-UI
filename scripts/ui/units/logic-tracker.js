@@ -5,10 +5,10 @@ exports.drawLogicLine = function(unit) {
     const processorX = processor.x;
     const processorY = processor.y;
 
-    Draw.draw(Layer.overlayUI+0.01, run(() => {
+    Draw.draw(Layer.overlayUI+0.01, () => {
         Lines.stroke(1, Color.purple);
         Draw.alpha(0.7);
         Lines.line(unitX, unitY, processorX, processorY);
         Draw.reset();
-    }));
+    });
 }

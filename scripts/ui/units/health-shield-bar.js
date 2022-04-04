@@ -55,11 +55,11 @@ exports.drawUnitShieldBar = function(unit, offset, force) {
     const alpha = getBarAlpha(prevStatus, force);
 
     // let text = barBuilder.buildPercentLabel(value); not sure about it.
-    Draw.draw(Layer.overlayUI+0.01, run(()=>{
+    Draw.draw(Layer.overlayUI+0.01, ()=>{
         barBuilder.draw(
             unitX, unitY+2, value, unit.hitSize/6, unitBarSize, "", Pal.accent, alpha
         )
-    }));
+    });
 }
 
 exports.drawUnitHealthBar = function(unit, force) {
@@ -80,11 +80,11 @@ exports.drawUnitHealthBar = function(unit, force) {
     const alpha = getBarAlpha(prevStatus, force);
 
     // let text = barBuilder.buildPercentLabel(value); not sure about it.
-    Draw.draw(Layer.overlayUI+0.01, run(()=>{
+    Draw.draw(Layer.overlayUI+0.01, ()=>{
         barBuilder.draw(
             unitX, unitY+2, value, unit.hitSize/6, unitBarSize, "", Color.scarlet, alpha
         )
-    }));
+    });
 
     return true;
 }

@@ -25,12 +25,12 @@ exports.divergingCircles = (x, y, parameters) => {
 const tasks = [];
 
 Events.run(Trigger.draw, () => {
-    Draw.draw(Layer.overlayUI+0.01, run(()=>{
+    Draw.draw(Layer.overlayUI+0.01, ()=>{
         for (let task of tasks) {
             if (task()) {
                 const index = tasks.indexOf(task);
                 if (index > -1) tasks.splice(index, 1);
             }
         }
-    }));
+    });
 });

@@ -54,9 +54,9 @@ Events.run(Trigger.update, () => {
 
 Events.run(Trigger.draw, () => {
     if (hovered && hovered.range && !isPlayerTeam) {
-        Draw.draw(Layer.overlayUI+0.01, run(() => {
+        Draw.draw(Layer.overlayUI+0.01, () => {
             Drawf.dashCircle(hovered.x, hovered.y, hovered.range(), hovered.team.color);
-        }));
+        });
     }
 })
 
