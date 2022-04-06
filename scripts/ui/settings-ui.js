@@ -33,6 +33,9 @@ Events.on(EventType.ClientLoadEvent, () => {
         contentTable.checkPref("eui-TrackLogicControl", false);
         contentTable.sliderPref("eui-maxZoom", 10, 1, 10, 1, i => i);
         contentTable.checkPref("eui-makeMineble", false);
+        contentTable.sliderPref("eui-action-delay", 500, 0, 3000, 25, i => i + " ms");
+        contentTable.checkPref("eui-interact-core", false);
+        contentTable.checkPref("eui-auto-fill", false);
 
         return contentTable;
     })());

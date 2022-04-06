@@ -2,7 +2,7 @@ let prevStatus = false;
 let nowMineble = [];
 
 Events.run(Trigger.update, () => {
-    const status = Core.settings.getBool("eui-makeMineble");
+    const status = Core.settings.getBool("eui-makeMineble", false);
     if (status == prevStatus) return;
 
     if (status) {
