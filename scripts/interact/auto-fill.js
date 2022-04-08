@@ -2,11 +2,12 @@ const timer = require("extended-ui/interact/interact-timer");
 
 Events.run(Trigger.update, () => {
     if (!Core.settings.getBool("eui-auto-fill", false) || !timer.canInteract()) return;
-    const isCoreAvailible = Core.settings.getBool("eui-interact-core", false);
     const player = Vars.player;
     const stack = player.unit().stack;
     const team = player.team();
     const core = player.closestCore();
+    const isCoreAvailible = Core.settings.getBool("eui-interact-core", false) && core;
+
     let tranfered = false;
     let request = null;
 

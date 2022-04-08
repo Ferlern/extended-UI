@@ -348,5 +348,5 @@ function mobileDoubleTap(name) {
 }
 
 function previewTableVisibility() {
-    return Core.settings.getBool("eui-ShowSchematicsPreview", true) && contentTable.visible && Boolean(hovered);
+    return Core.settings.getBool("eui-ShowSchematicsPreview", true) && Boolean(contentTable) && contentTable.visible && Boolean(hovered);
 }
