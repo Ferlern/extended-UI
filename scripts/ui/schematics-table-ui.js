@@ -134,7 +134,7 @@ function showEditSchematicDialog(currentCategory, column, row) {
 }
 
 function setMarker() {
-    let overlayMarker = Vars.ui.hudGroup.find("minimap/position");
+    let overlayMarker = Vars.ui.hudGroup.getChildren().get(2);
     overlayMarker.row();
     contentTable = overlayMarker.table(Styles.black3).top().right().get();
     contentTable.visibility = () => isBuilded;

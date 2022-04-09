@@ -55,7 +55,15 @@ Events.run(Trigger.update, () => {
 Events.run(Trigger.draw, () => {
     if (hovered && hovered.range && !isPlayerTeam) {
         Draw.draw(Layer.overlayUI+0.01, () => {
-            Drawf.dashCircle(hovered.x, hovered.y, hovered.range(), hovered.team.color);
+            let realRange;
+
+            if (hovered.realRange) {
+                realRange = hovered.realRange();
+            } else {
+                realRange = hovered.range();
+            }
+
+            Drawf.dashCircle(hovered.x, hovered.y, realRange, hovered.team.color);
         });
     }
 })
