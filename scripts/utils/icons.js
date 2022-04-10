@@ -18,22 +18,31 @@ exports.getSprites = function() {
     return allSprites;
 }
 
+exports.getUnitSprites = function() {
+    if (spriteStorage.length == 0) setupSprites();
+    return spriteStorage[2]; 
+}
+
 exports.getByName = function(name) {
     return exports.getIcons()[name] || exports.getSprites()[name] || new TextureRegionDrawable(Icon.pencil);
 }
 
 const spriteClasses = [Items, Liquids, UnitTypes, StatusEffects, Blocks]
+const spriteStorage = [];
 let allIcons = {};
 let allSprites = {};
 
 function setupSprites() {
     for (let spriteClass of spriteClasses) {
+        let sprites = [];
         for (let key in spriteClass) {
             let item = spriteClass[key];
             if (!(typeof item.icon === 'function')) continue;
             try {
+                sprites[item.name] = new TextureRegionDrawable(item.icon(Cicon.medium));
                 allSprites[item.name] = new TextureRegionDrawable(item.icon(Cicon.medium));
             } catch (e) {}
         }
+        spriteStorage.push(sprites);
     }
 }
