@@ -7,6 +7,7 @@ const output = require("extended-ui/utils/output-wrapper");
 const modules = [
     "utils/polyfill",
     "interact/auto-fill",
+    "interact/auto-unit",
     "ui/other/settings-ui",
     "ui/other/schematics-table-ui",
     "ui/other/power-ui",

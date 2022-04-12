@@ -7,7 +7,7 @@ let isBuilded = false;
 let showSettings = false;
 let interactCore = Core.settings.getBool("eui-interact-core", false);
 let fillBuildings = Core.settings.getBool("eui-auto-fill", false);
-let selectedUnit = Core.settings.getString("eui-auto-unit", false);
+let selectedUnit = Core.settings.getString("eui-auto-unit");
 
 Events.run(Trigger.update, () => {
     if (!Core.settings.getBool("eui-showInteractSettings", true)) {
