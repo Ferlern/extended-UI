@@ -17,7 +17,6 @@ Events.run(Trigger.update, () => {
     if (!isCheckNeeded(selectedUnitType)) return;
 
     try {
-        print("Checking for eligible units...");
         Groups.unit.each((unit) => {
             if (unit.isAI() && !unit.dead && isEligible(unit, selectedUnitType)) {
                 Call.unitControl(Vars.player, unit);
