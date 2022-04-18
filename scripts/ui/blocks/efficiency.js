@@ -90,7 +90,7 @@ Events.on(ClientLoadEvent, () => {
 function countEfficiency(build) {
     const state = storage.get(build.id);
     const points = build.status().toString() == "active" ? 0.001 : 0;
-    const currentTime = Date.now();
+    const currentTime = Time.time / 60 * 1000; // convert to milliseconds
     const timer = Core.settings.getInt("eui-EfficiencyTimer", 15);
     const millisecondTimer = timer * 1000;
 
