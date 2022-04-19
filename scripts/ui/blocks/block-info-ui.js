@@ -86,7 +86,15 @@ function clearTable() {
 }
 
 function buildTable(build) {
-    if (build.power && !isPlayerTeam) {
+    const power = build.power;
+    const items = build.items;
+    const config = build.config();
+    const displayPower = power && !isPlayerTeam;
+    const displayItems = items && build.items.total() > 0 && (!isPlayerTeam || build.items.total() <= 50);
+    const displayConfig = typeof config == "string" && !isPlayerTeam;
+    if (![displayPower, displayItems, displayConfig].includes(true)) return;
+
+    if (displayPower) {
         const powerTable = contentTable.table().get();
         const graph = build.power.graph;
 
@@ -101,7 +109,9 @@ function buildTable(build) {
         if (maxNetPower) {
             powerTable.label(() => Core.bundle.get("block-info.stored") + ": " + Math.round(storedNetPower/maxNetPower*100) + "%");
         }
-    } else if (build.items && build.items.total() > 0 && (!isPlayerTeam || build.items.total() <= 20)) {
+        contentTable.row();
+    }
+    if (displayItems) {
         const resourcesTable = contentTable.table().get();
         let i = 0;
         build.items.each((item,amount) => {
@@ -114,13 +124,14 @@ function buildTable(build) {
                 resourcesTable.row();
             }
         });
-    } else if (typeof build.config() == "string" && !isPlayerTeam) {
+        contentTable.row();
+    }
+    if (displayConfig) {
         const configTable = contentTable.table().get();
         configTable.label(() => {
             return build.config();
         })
-    } else {
-        return;
+        contentTable.row();
     }
     isBuilded = true;
 }
