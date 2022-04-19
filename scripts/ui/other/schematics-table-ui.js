@@ -73,64 +73,62 @@ Events.run(Trigger.update, () => {
 });
 
 function showEditSchematicButtonDialog(currentCategory, column, row) {
-    let editSchematicButtonDialog = new BaseDialog(Core.bundle.get("schematics-table.dialog.edit-schematic-button.title"));
+    const size = Vars.mobile ? 320 : 560
+    const schematicString = getSchematicString(currentCategory, column, row);
+    const editSchematicButtonDialog = new BaseDialog(Core.bundle.get("schematics-table.dialog.edit-schematic-button.title"));
     editSchematicButtonDialog.addCloseButton();
-    editSchematicButtonDialog.cont.pane(table => {
-        table.button(Core.bundle.get("schematics-table.dialog.edit-schematic-button.set-schematic"), Styles.defaultt, () => {
-            showEditSchematicDialog(currentCategory, column, row);
-            editSchematicButtonDialog.hide();
-        }).width(240).height(50);
-        table.row();
-        table.button(Core.bundle.get("schematics-table.dialog.edit-schematic-button.set-image"), Styles.defaultt, () => {
-            showEditImageDialog(getSchematicString(currentCategory, column, row) + "image");
-            editSchematicButtonDialog.hide();
-        }).padTop(10).width(240).height(50);
-    });
+
+    addEditImageTable(editSchematicButtonDialog, schematicString + "image", size);
+    editSchematicButtonDialog.cont.row();
+    addEditSchematicTable(editSchematicButtonDialog, schematicString);
 
     editSchematicButtonDialog.show();
 }
 
 function showEditImageDialog(name) {
-    let size = Vars.mobile ? 320 : 640
-
+    const size = Vars.mobile ? 320 : 640
     const editImageDialog = new BaseDialog(Core.bundle.get("schematics-table.dialog.change-image.title"));
     editImageDialog.addCloseButton();   
 
-    let iconsAndSprites = [iconsUtil.getIcons(), iconsUtil.getSprites()];
-    for (let images of iconsAndSprites) {
-        let r = 0;
-        editImageDialog.cont.pane(table => {
-            for (let image of Object.entries(images)) {
-                const setted_name = image[0];
-                let imageButton = table.button(image[1], Styles.cleari, () => {
-                    Vars.ui.announce(Core.bundle.get("schematics-table.dialog.change-image.setted-announce-text") + " " + setted_name);
-                    Core.settings.put(name, setted_name);
-                    
-                    rebuildTable();
-                }).size(48).pad(4).get();
-                imageButton.resizeImage(48*0.8);
-        
-                if (++r % 8 == 0) table.row();
-            }
-        }).size(size, size);
-    }
+    addEditImageTable(editImageDialog, name, size);
 
     editImageDialog.show();
 }
 
-function showEditSchematicDialog(currentCategory, column, row) {
+function addEditImageTable(dialog, name, size) {
+    const iconsAndSprites = [iconsUtil.getIcons(), iconsUtil.getSprites()];
+
+    dialog.cont.pane(table => {
+        for (let images of iconsAndSprites) {
+            let r = 0;
+            table.pane(table => {
+                for (let image of Object.entries(images)) {
+                    const setted_name = image[0];
+                    let imageButton = table.button(image[1], Styles.cleari, () => {
+                        Vars.ui.announce(Core.bundle.get("schematics-table.dialog.change-image.setted-announce-text") + " " + setted_name);
+                        Core.settings.put(name, setted_name);
+                        
+                        rebuildTable();
+                    }).size(48).pad(4).get();
+                    imageButton.resizeImage(48*0.8);
+            
+                    if (++r % 8 == 0) table.row();
+                }
+            }).top();
+        }
+    }).size(size*2, size);
+}
+
+function addEditSchematicTable(dialog, name) {
     let text = Core.bundle.get("schematics-table.dialog.change-schematic.title")
-    let setSchematicDialog = new BaseDialog(text);
-    setSchematicDialog.addCloseButton();
-    setSchematicDialog.cont.pane(table => {
+    dialog.cont.pane(table => {
         table.labelWrap(text).growX();
         table.row();
-        table.field(Core.settings.getString(getSchematicString(currentCategory, column, row), ""), text => {
-            Core.settings.put(getSchematicString(currentCategory, column, row), text);
+        table.field(Core.settings.getString(name, ""), text => {
+            Core.settings.put(name, text);
             rebuildTable();
         }).growX();
-    }).size(Core.graphics.getWidth()/2, 640);
-    setSchematicDialog.show();
+    }).size(Core.graphics.getWidth()/2, 80);
 }
 
 function setMarker() {
@@ -290,6 +288,10 @@ function rebuildPreviewTable() {
     }
 }
 
+function previewTableVisibility() {
+    return Core.settings.getBool("eui-ShowSchematicsPreview", true) && Boolean(contentTable) && contentTable.visible && Boolean(hovered);
+}
+
 function getCategoryTooltip(categoryId) {
     return Core.settings.getString("category" + categoryId + "name", Core.bundle.get("schematics-table.default-cathegory-tooltip"));
 }
@@ -345,8 +347,4 @@ function mobileDoubleTap(name) {
         lastTapTime = Date.now();
         return false;
     }
-}
-
-function previewTableVisibility() {
-    return Core.settings.getBool("eui-ShowSchematicsPreview", true) && Boolean(contentTable) && contentTable.visible && Boolean(hovered);
 }
