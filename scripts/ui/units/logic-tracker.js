@@ -2,6 +2,7 @@ exports.drawLogicLine = function(unit) {
     const unitX = unit.x;
     const unitY = unit.y;
     const processor = unit.controller.controller;
+    if (!processor) return;
     const processorX = processor.x;
     const processorY = processor.y;
 
