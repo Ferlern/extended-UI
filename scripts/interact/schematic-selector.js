@@ -1,64 +1,54 @@
-const euiEvents = require("extended-ui/utils/events");
+const euiEvents = require("extended-ui/utils/event/events");
 const schematicsCreate = require("extended-ui/utils/schematics");
 
-let x1 = 0;
-let y1 = 0;
-let x2 = 0;
-let y2 = 0;
-
+let drawing = false;
 let startDrawX = 0;
 let startDrawY = 0;
+let endDrawX = 0;
+let endDrawY = 0;
 
 Events.run(Trigger.draw, () => {
-    if (x1 || y1) {
-        let pos = Core.input.mouseWorld(Core.input.mouseX(), Core.input.mouseY());
+    if (drawing) {
         Draw.draw(Layer.overlayUI+0.01, () => {
             Draw.z(Layer.darkness + 1);
 
             Lines.stroke(1, Pal.accent);
-            Lines.rect(startDrawX, startDrawY, pos.x - startDrawX, pos.y - startDrawY);
+            Lines.rect(startDrawX, startDrawY, endDrawX - startDrawX, endDrawY - startDrawY);
             Draw.reset();
         });
     }
 });
 
-const creator = event => {
-    if (event instanceof InputEvent && event.keyCode == "Mouse Left") {
-        let pos = Core.input.mouseWorld(Core.input.mouseX(), Core.input.mouseY());
-        let mouseTile = Vars.world.tileWorld(pos.x, pos.y);
+const coordListener = (startPos, startTile, pos, mouseTile) => {
+    startDrawX = startPos.x;
+    startDrawY = startPos.y;
+    endDrawX = pos.x;
+    endDrawY = pos.y;
+}
 
-        if (event.type == "keyDown") {
-            x1 = mouseTile.centerX();
-            y1 = mouseTile.centerY();
-            startDrawX = pos.x;
-            startDrawY = pos.y;
 
-        } else if (event.type == "keyUp") {
-            x2 = mouseTile.centerX();
-            y2 = mouseTile.centerY();
-            schematicsCreate.create(x1, y1, x2, y2);
-            Vars.control.input.lastSchematic = schematicsCreate.create(Math.min(x1,x2), Math.min(y1,y2),
-                                                                       Math.max(x1,x2), Math.max(y1,y2));
+const creator = (startPos, startTile, pos, mouseTile) => {
+    Vars.control.input.lastSchematic = schematicsCreate.create(
+        Math.min(startTile.centerX(), mouseTile.centerX()), Math.min(startTile.centerY(), mouseTile.centerY()),
+        Math.max(startTile.centerX(), mouseTile.centerX()), Math.max(startTile.centerY(), mouseTile.centerY())
+    );
 
-            if (Vars.control.input.lastSchematic != null) {
-                Vars.control.input.useSchematic(Vars.control.input.lastSchematic);
-                euiEvents.emit(euiEvents.eventType.schemSelectionEnd);
-                Core.scene.removeListener(creator);
-            };
-
-            x1 = 0;
-            y1 = 0;
-            x2 = 0;
-            y2 = 0;
-        }
-    }
-    return false;
+    if (Vars.control.input.lastSchematic != null) {
+        Vars.control.input.useSchematic(Vars.control.input.lastSchematic);
+        euiEvents.emit(euiEvents.eventType.schemSelectionEnd);
+        euiEvents.removeListener(euiEvents.eventType.dragEnded, creator);
+        drawing = false;
+    };
 }
 
 euiEvents.on(euiEvents.eventType.schemSelectionButtonPresed, (active) => {
     if (active) {
-        Core.scene.addListener(creator);
+        euiEvents.on(euiEvents.eventType.dragEnded, creator);
+        euiEvents.on(euiEvents.eventType.dragged, coordListener);
+        drawing = true;
     } else {
-        Core.scene.removeListener(creator);
+        euiEvents.removeListener(euiEvents.eventType.dragEnded, creator);
+        euiEvents.removeListener(euiEvents.eventType.dragged, coordListener);
+        drawing = false;
     }
 });

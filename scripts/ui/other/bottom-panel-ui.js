@@ -1,6 +1,6 @@
 const iconsUtil = require("extended-ui/utils/icons");
 const coreUnits = require("extended-ui/units/core-units");
-const euiEvents = require("extended-ui/utils/events");
+const euiEvents = require("extended-ui/utils/event/events");
 
 let selectUnitDialog;
 let contentTable = null;

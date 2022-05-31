@@ -6,9 +6,12 @@ const output = require("extended-ui/utils/output-wrapper");
 
 const modules = [
     "utils/polyfill",
+    "utils/event/drag",
+
     "interact/auto-fill",
     "interact/auto-unit",
     "interact/schematic-selector",
+
     "ui/other/settings-ui",
     "ui/other/schematics-table-ui",
     "ui/other/power-ui",
@@ -20,6 +23,7 @@ const modules = [
     "ui/units/draw-cycle",
     "ui/alerts/losing-support",
     "ui/alerts/under-attack",
+
     "other/extend-zoom",
     "other/mine",
 ]
