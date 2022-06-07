@@ -35,6 +35,9 @@ Events.run(Trigger.update, () => {
     if (dragging) {
         let pos = Core.input.mouseWorld(Core.input.mouseX(), Core.input.mouseY());
         let mouseTile = Vars.world.tileWorld(pos.x, pos.y);
+
+        if (!mouseTile) return;
+
         euiEvents.emit(euiEvents.eventType.dragged, startPos, startTile, pos, mouseTile);
     }
 });

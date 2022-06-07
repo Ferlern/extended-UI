@@ -28,6 +28,8 @@ const coordListener = (startPos, startTile, pos, mouseTile) => {
 
 
 const creator = (startPos, startTile, pos, mouseTile) => {
+    if (!mouseTile || !startTile) return;
+
     Vars.control.input.lastSchematic = schematicsCreate.create(
         Math.min(startTile.centerX(), mouseTile.centerX()), Math.min(startTile.centerY(), mouseTile.centerY()),
         Math.max(startTile.centerX(), mouseTile.centerX()), Math.max(startTile.centerY(), mouseTile.centerY())

@@ -7,6 +7,10 @@ const output = require("extended-ui/utils/output-wrapper");
 const modules = [
     "utils/polyfill",
     "utils/event/drag",
+    "utils/draw/build-plan",
+
+    "input/core-drag",
+    // "input/conveyor",
 
     "interact/auto-fill",
     "interact/auto-unit",
