@@ -57,7 +57,7 @@ Events.run(Trigger.update, () => {
             unitTable.label(() => {
                 return getTeamColor(team) + amount + '[white]';
             }).left();
-            const image = unitTable.image(entity.type.icon(Cicon.small)).left().padRight(5).padBottom(2).maxSize(24).get();
+            const image = unitTable.image(entity.icon()).left().padRight(5).padBottom(2).maxSize(24).get();
             image.hovered(() => {
                 hoveredEntity = entity;
             });

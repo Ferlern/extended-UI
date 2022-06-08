@@ -15,7 +15,7 @@ Events.run(Trigger.update, () => {
         if (!timer.canInteract()) return;
 
         const block = b.tile.block();
-        if (!block.consumes.has(ConsumeType.item)) return;
+        if (!block.consumers.find(c => c instanceof ConsumeItems || c instanceof ConsumeItemFilter || c instanceof ConsumeItemDynamic)) return;
 
         if (b.acceptStack(stack.item, stack.amount, player.unit()) >= 5) {
             Call.transferInventory(player, b);
@@ -64,7 +64,7 @@ function getUnitFactoryRequest(build, block, core) {
 }
 
 function getItemRequest(build, block, core) {
-    const consumesItems = block.consumes.get(ConsumeType.item);
+    const consumesItems = block.consumers.find(c => c instanceof ConsumeItems || c instanceof ConsumeItemFilter || c instanceof ConsumeItemDynamic);
     if (!consumesItems) return null;
 
     if (consumesItems instanceof ConsumeItemFilter) {
@@ -82,7 +82,12 @@ function getFilterRequest(filter, build, core) {
     let bitIndex = 0;
     let item
 
-    filter.applyItemFilter(bits);
+    // doesn't work with ConsumeItemFlammable and i don't want to fix it rn ;)
+    try {
+        filter.applyItemFilter(bits);
+    } catch (e) {
+        return null;
+    }
     do {
         bitIndex = bits.nextSetBit(bitIndex);
 

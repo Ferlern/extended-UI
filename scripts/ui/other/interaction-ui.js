@@ -76,21 +76,21 @@ function buildTable() {
     contentTable.row();
     const buttonTable = contentTable.table().get();
     buttonTable.defaults().size(32);
-    buttonTable.button(iconsUtil.getByName("core-nucleus"), Styles.clearToggleTransi, () => {
+    buttonTable.button(iconsUtil.getByName("core-nucleus"), Styles.clearTogglei, () => {
         interactCore = !interactCore;
         Core.settings.put("eui-interact-core", interactCore);
     }).tooltip(Core.bundle.get("interaction-settings.button.core.tooltip")).update(b => {
         b.setChecked(interactCore);
     }).get().resizeImage(32*0.8);
 
-    buttonTable.button(Icon.box, Styles.clearToggleTransi, () => {
+    buttonTable.button(Icon.box, Styles.clearTogglei, () => {
         fillBuildings = !fillBuildings;
         Core.settings.put("eui-auto-fill", fillBuildings);
     }).tooltip(Core.bundle.get("interaction-settings.button.auto-fill.tooltip")).update(b => {
         b.setChecked(fillBuildings);
     }).get().resizeImage(32*0.8);
 
-    buttonTable.button(iconsUtil.getByName(selectedUnit), Styles.clearTransi, () => {
+    buttonTable.button(iconsUtil.getByName(selectedUnit), Styles.cleari, () => {
         selectUnitDialog.show();
     }).tooltip(Core.bundle.get("interaction-settings.button.auto-unit.tooltip")).get().resizeImage(32*0.8);
 }

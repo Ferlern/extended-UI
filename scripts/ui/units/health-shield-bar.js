@@ -29,8 +29,8 @@ exports.drawUnitShieldBar = function(unit, offset, force) {
                 maxShield = ability.max;
             }
         }
-    
-        iterationTools.iterateSeq(shieldFinder, unit.abilities.iterator());
+        unit.abilities.forEach(shieldFinder);
+        // iterationTools.iterateSeq(shieldFinder, unit.abilities.iterator());
         if (!maxShield) {
             maxShield = 40;
         }

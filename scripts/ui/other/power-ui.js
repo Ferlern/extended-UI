@@ -38,8 +38,8 @@ Events.run(Trigger.update, () => {
         }
     }
 
-    iterationTools.iterateSeq(getAllPowerGraphs, Vars.indexer.getAllied(Vars.player.team(), BlockFlag.generator).iterator());
-    iterationTools.iterateSeq(getAllPowerGraphs, Vars.indexer.getAllied(Vars.player.team(), BlockFlag.reactor).iterator());
+    iterationTools.iterateSeq(getAllPowerGraphs, Vars.indexer.getFlagged(Vars.player.team(), BlockFlag.generator).iterator());
+    iterationTools.iterateSeq(getAllPowerGraphs, Vars.indexer.getFlagged(Vars.player.team(), BlockFlag.reactor).iterator());
     
     // when player remove power node, power go to 0 for ~half of a second somehow.
     if (currentNetPower && !newCurrentNetPower) {

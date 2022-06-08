@@ -115,7 +115,7 @@ function buildTable(build) {
         const resourcesTable = contentTable.table().get();
         let i = 0;
         build.items.each((item,amount) => {
-            resourcesTable.image(item.icon(Cicon.small)).left();
+            resourcesTable.image(item.uiIcon).left();
             resourcesTable.label(() => {
                 return amount.toString();
             }).padLeft(2).left().padRight(4);

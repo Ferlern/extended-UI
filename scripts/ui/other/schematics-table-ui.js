@@ -132,7 +132,7 @@ function addEditSchematicTable(dialog, name) {
 }
 
 function setMarker() {
-    let overlayMarker = Vars.ui.hudGroup.getChildren().get(2);
+    let overlayMarker = Vars.ui.hudGroup.getChildren().get(3);
     overlayMarker.row();
     contentTable = overlayMarker.table(Styles.black3).top().right().get();
     contentTable.visibility = () => isBuilded;
@@ -173,7 +173,7 @@ function buildTable() {
     const categoryButtonsTable = wrapped.table().get();
     for (let i = 0; i < columns; i++) {
         const index = i;
-        imageButton = categoryButtonsTable.button(getCategoryImage(index), Styles.clearToggleTransi, ()=>{
+        imageButton = categoryButtonsTable.button(getCategoryImage(index), Styles.clearTogglei, ()=>{
             currentCategory = index;
         }).update(b => {
             b.setChecked(currentCategory == index);
@@ -254,7 +254,7 @@ function rebuildPreviewTable() {
     previewTable.table(null, requirementsTable => {
         let i = 0;
         requirements.each((item, amount) => {
-            requirementsTable.image(item.icon(Cicon.small)).left();
+            requirementsTable.image(item.uiIcon).left();
             requirementsTable.label(() => {
                 if (core == null || Vars.state.rules.infiniteResources || core.items.has(item, amount)) return "[lightgray]" + amount;
                 return (core.items.has(item, amount) ? "[lightgray]" : "[scarlet]") + Math.min(core.items.get(item), amount) + "[lightgray]/" + amount;
