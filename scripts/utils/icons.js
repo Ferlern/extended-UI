@@ -37,7 +37,7 @@ function setupSprites() {
         let sprites = [];
         for (let key in spriteClass) {
             let item = spriteClass[key];
-            if (!(typeof item.icon === 'function')) continue;
+            if (!item || !(typeof item.icon === 'function')) continue;
             try {
                 sprites[item.name] = new TextureRegionDrawable(item.icon(Cicon.medium));
                 allSprites[item.name] = new TextureRegionDrawable(item.icon(Cicon.medium));
