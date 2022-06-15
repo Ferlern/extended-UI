@@ -2,7 +2,7 @@ const Alerts = require("extended-ui/ui/alerts/alert");
 const output = require("extended-ui/utils/output-wrapper");
 const unitsCounter = require("extended-ui/units/units-counter");
 const relativeValue = require("extended-ui/utils/relative-value");
-const drawTasks = require("extended-ui/utils/draw-tasks");
+const drawTasks = require("extended-ui/utils/draw/draw-tasks");
 
 const sendCooldown = 60 * 60 // 1 min;
 const searchSize = 36 * 8; // 36 blocks around destroyer

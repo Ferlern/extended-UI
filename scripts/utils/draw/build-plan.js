@@ -1,8 +1,9 @@
 exports.draw = function(plans) {
     Draw.draw(Layer.plans + 0.01, ()=>{
+        const echable = new Eachable(plans);
         plans.forEach(plan => {
-            plan.block.drawRequestRegion(plan, new Eachable(plans));
-            plan.block.drawRequestConfigTop(plan, new Eachable(plans));
+            plan.block.drawRequestRegion(plan, echable);
+            plan.block.drawRequestConfigTop(plan, echable);
         });
     });
 }
