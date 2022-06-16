@@ -21,6 +21,16 @@ Events.run(Trigger.draw, () => {
     }
 });
 
+const deselectListener = event => {
+    if (event instanceof InputEvent) {
+        if (event.keyCode == "Mouse Right" && event.type == "keyDown") {
+            buildPlans = [];
+            if (isListen) endListen();
+        }
+    }
+    return false;
+}
+
 const listener = (startPos, startTile, pos, mouseTile) => {
     if (startTile == lastStartTile && mouseTile == lastMouseTile ||
         startTile == mouseTile ||
@@ -38,18 +48,26 @@ const listener = (startPos, startTile, pos, mouseTile) => {
 
 euiEvents.on(euiEvents.eventType.dragStarted, (startPos, startTile) => {
     if (startTile && pathfindSelector(startTile.block()) && (!isListen)) {
-        isListen = true;
-        euiEvents.on(euiEvents.eventType.dragged, listener);
+        startListen();
     }
 });
 
 euiEvents.on(euiEvents.eventType.dragEnded, () => {
-    if (isListen) {
-        if (buildPlans) {
-            buildPlans.forEach(plan => Vars.player.unit().addBuild(plan));
-            buildPlans = [];
-        }
-        isListen = false;
-        euiEvents.removeListener(euiEvents.eventType.dragged, listener);
-    }
+    if (isListen) endListen();
 });
+
+function startListen() {
+    isListen = true;
+    Core.scene.addListener(deselectListener);
+    euiEvents.on(euiEvents.eventType.dragged, listener);
+}
+
+function endListen() {
+    if (buildPlans) {
+        buildPlans.forEach(plan => Vars.player.unit().addBuild(plan));
+        buildPlans = [];
+    }
+    isListen = false;
+    euiEvents.removeListener(euiEvents.eventType.dragged, listener);
+    Core.scene.removeListener(deselectListener);
+}
