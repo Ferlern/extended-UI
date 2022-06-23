@@ -1,6 +1,7 @@
 const euiEvents = require("extended-ui/utils/event/events");
 const drawPlans = require("extended-ui/utils/draw/build-plan");
 const adjacentPosition = require("extended-ui/utils/ai/adjacent-position");
+const busy = require("extended-ui/input/busy");
 
 const targetBlock = Blocks.vault;
 let isListen = false;
@@ -38,8 +39,8 @@ const listener = (startPos, startTile, pos, mouseTile) => {
 }
 
 euiEvents.on(euiEvents.eventType.dragStarted, (startPos, startTile) => {
-    if (startTile && startTile.block() instanceof CoreBlock && !isListen) {
-        startListen()
+    if (startTile && startTile.block() instanceof CoreBlock && !busy.isBusy() &&!isListen) {
+        startListen();
     }
 });
 

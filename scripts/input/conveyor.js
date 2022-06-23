@@ -2,6 +2,7 @@ const euiEvents = require("extended-ui/utils/event/events");
 const drawPlans = require("extended-ui/utils/draw/build-plan");
 const adjacentPosition = require("extended-ui/utils/ai/adjacent-position");
 const pathfind = require("extended-ui/utils/ai/pathfind");
+const busy = require("extended-ui/input/busy");
 
 const pathfindSelector = (block) => {
     if (block == Blocks.conveyor ||
@@ -32,10 +33,11 @@ const deselectListener = event => {
 }
 
 const listener = (startPos, startTile, pos, mouseTile) => {
-    if (startTile == lastStartTile && mouseTile == lastMouseTile ||
-        startTile == mouseTile ||
-        Vars.control.input.isUsingSchematic() ||
-        Vars.control.input.selectedBlock()) return;
+    if (startTile == lastStartTile && mouseTile == lastMouseTile) return;
+    if (startTile == mouseTile) {
+        buildPlans = [];
+        return;
+    }
 
     lastStartTile = startTile;
     lastMouseTile = mouseTile;
@@ -47,7 +49,7 @@ const listener = (startPos, startTile, pos, mouseTile) => {
 }
 
 euiEvents.on(euiEvents.eventType.dragStarted, (startPos, startTile) => {
-    if (startTile && pathfindSelector(startTile.block()) && (!isListen)) {
+    if (startTile && pathfindSelector(startTile.block()) && !busy.isBusy() && !isListen) {
         startListen();
     }
 });
