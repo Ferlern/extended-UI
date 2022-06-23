@@ -10,7 +10,7 @@ let oldCoreItemsTable;
 let isReplaced = false;
 
 Events.on(ClientLoadEvent, () => {
-    contentTable = new Table(Styles.black3);
+    contentTable = new Table(Styles.black6);
     contentTable.pack();
 
     const coreInfoTable = Vars.ui.hudGroup.find("coreitems");
