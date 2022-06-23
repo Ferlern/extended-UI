@@ -19,6 +19,7 @@ const modules = [
     "ui/other/settings-ui",
     "ui/other/schematics-table-ui",
     "ui/other/power-ui",
+    "ui/other/resource-rate-ui",
     "ui/other/bottom-panel-ui",
     "ui/blocks/block-info-ui",
     "ui/blocks/progress-bar",

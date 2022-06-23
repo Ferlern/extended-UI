@@ -22,6 +22,7 @@ Events.on(EventType.ClientLoadEvent, () => {
         contentTable.checkPref("eui-ShowUnitTable", true);
         contentTable.checkPref("eui-ShowBlockInfo", true);
         contentTable.checkPref("eui-ShowAlerts", true);
+        contentTable.checkPref("eui-ShowResourceRate", false);
         contentTable.checkPref("eui-ShowSchematicsTable", true);
         contentTable.checkPref("eui-ShowSchematicsPreview", true);
         contentTable.sliderPref("eui-SchematicsTableRows", 4, 2, 10, 1, i => i);
@@ -35,6 +36,8 @@ Events.on(EventType.ClientLoadEvent, () => {
         contentTable.checkPref("eui-makeMineble", false);
         contentTable.checkPref("eui-showInteractSettings", true);
         contentTable.sliderPref("eui-action-delay", 500, 0, 3000, 25, i => i + " ms");
+        contentTable.checkPref("eui-DragBlock", false);
+        contentTable.checkPref("eui-DragPathfind", false);
 
         return contentTable;
     })());

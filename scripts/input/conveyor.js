@@ -57,9 +57,11 @@ euiEvents.on(euiEvents.eventType.dragEnded, () => {
 });
 
 function startListen() {
-    isListen = true;
-    Core.scene.addListener(deselectListener);
-    euiEvents.on(euiEvents.eventType.dragged, listener);
+    if (Core.settings.getBool("eui-DragPathfind", false)) {
+        isListen = true;
+        Core.scene.addListener(deselectListener);
+        euiEvents.on(euiEvents.eventType.dragged, listener);
+    }
 }
 
 function endListen() {
