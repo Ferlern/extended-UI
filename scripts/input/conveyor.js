@@ -22,17 +22,12 @@ Events.run(Trigger.draw, () => {
     }
 });
 
-const deselectListener = event => {
-    if (event instanceof InputEvent) {
-        if (event.keyCode == "Mouse Right" && event.type == "keyDown") {
-            buildPlans = [];
-            if (isListen) endListen();
-        }
-    }
-    return false;
-}
-
 const listener = (startPos, startTile, pos, mouseTile) => {
+    if (Core.input.keyTap(KeyCode.mouseRight)) {
+        buildPlans = [];
+        endListen();
+        return;
+    }
     if (startTile == lastStartTile && mouseTile == lastMouseTile) return;
     if (startTile == mouseTile) {
         buildPlans = [];
@@ -61,7 +56,6 @@ euiEvents.on(euiEvents.eventType.dragEnded, () => {
 function startListen() {
     if (Core.settings.getBool("eui-DragPathfind", false)) {
         isListen = true;
-        Core.scene.addListener(deselectListener);
         euiEvents.on(euiEvents.eventType.dragged, listener);
     }
 }
@@ -73,5 +67,4 @@ function endListen() {
     }
     isListen = false;
     euiEvents.removeListener(euiEvents.eventType.dragged, listener);
-    Core.scene.removeListener(deselectListener);
 }
