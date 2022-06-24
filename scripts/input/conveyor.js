@@ -23,7 +23,7 @@ Events.run(Trigger.draw, () => {
 });
 
 const listener = (startPos, startTile, pos, mouseTile) => {
-    if (Core.input.keyTap(KeyCode.mouseRight)) {
+    if (Core.input.keyTap(Packages.arc.input.KeyCode.mouseRight)) {
         buildPlans = [];
         endListen();
         return;

@@ -16,8 +16,8 @@ Events.on(ClientLoadEvent, () => {
 
     if (Version.number < 7) {
         const coreInfoTable = Vars.ui.hudGroup.find("coreitems");
-        coreItemsCell = coreInfoTable.getCell(oldCoreItemsTable);
         oldCoreItemsTable = coreInfoTable.getChildren().get(0);
+        coreItemsCell = coreInfoTable.getCell(oldCoreItemsTable);
     } else {
         coreItemsCollapser = Vars.ui.hudGroup.find('coreinfo').getChildren().get(1).getChildren().get(0);
         oldCoreItemsTable = coreItemsCollapser.getChildren().get(0);

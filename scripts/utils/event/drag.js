@@ -10,8 +10,8 @@ euiEvents.eventType.dragEnded = "dragEnded";
 
 
 Events.run(Trigger.update, () => {
-    const tap = Core.input.keyTap(KeyCode.mouseLeft);
-    const release = Core.input.keyRelease(KeyCode.mouseLeft);
+    const tap = Core.input.keyTap(Packages.arc.input.KeyCode.mouseLeft);
+    const release = Core.input.keyRelease(Packages.arc.input.KeyCode.mouseLeft);
 
     if (dragging || tap || release) {
         let pos = Core.input.mouseWorld(Core.input.mouseX(), Core.input.mouseY());
