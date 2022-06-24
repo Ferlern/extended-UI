@@ -36,8 +36,10 @@ Events.on(EventType.ClientLoadEvent, () => {
         contentTable.checkPref("eui-makeMineble", false);
         contentTable.checkPref("eui-showInteractSettings", true);
         contentTable.sliderPref("eui-action-delay", 500, 0, 3000, 25, i => i + " ms");
-        contentTable.checkPref("eui-DragBlock", false);
-        contentTable.checkPref("eui-DragPathfind", false);
+        if (!Vars.mobile) {
+            contentTable.checkPref("eui-DragBlock", false);
+            contentTable.checkPref("eui-DragPathfind", false);
+        }
 
         return contentTable;
     })());
