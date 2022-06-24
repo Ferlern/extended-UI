@@ -60,7 +60,7 @@ function QueuePop() {
     return item;
 }
 
-// copied from https://github.com/QmelZ/hackustry/blob/master/scripts/libs/toast.js
+// from https://github.com/QmelZ/hackustry/blob/master/scripts/libs/toast.js
 function showToast(icon, text){    
     if(!icon || !text) return;
     

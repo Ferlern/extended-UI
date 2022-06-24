@@ -1,26 +1,31 @@
 importPackage(Packages.arc.util.pooling);
 
 const fontScale = 0.25 / Scl.scl(1.0);
+const borderSize = 1;
 
 exports.draw = function(drawX, drawY, value, targetSizeInBlocks, barSize, labelText, color, alpha) {
     if (!value) return;
     
-    const fillSize = barSize - 2;
-    const indent = barSize/2;
     const blockPixelSize = targetSizeInBlocks*8;
     const startX = drawX - blockPixelSize/2 - barSize;
     const startY = drawY + blockPixelSize/2;
     const endY = startY + barSize;
-    
+
+    const barLenght = blockPixelSize + barSize*2;
+    const innerBarLenght = barLenght - borderSize*2
+    const barHeight = barSize;
+    const innerBarHeight = barHeight - borderSize*2;
+
+    const fillSize = (innerBarLenght) * value;
+
     Draw.z(Layer.darkness+1);
 
-    Lines.stroke(1, Pal.darkerGray);
+    Lines.stroke(borderSize, Pal.darkerGray);
     Draw.alpha(alpha);
-    Lines.rect(startX, startY, blockPixelSize + barSize*2, barSize);
-    Lines.stroke(fillSize, color);
-    Draw.alpha(alpha);
-    // TODO 0% Looked like it was already built by 2 points (because of Lines.stroke)
-    Lines.line(startX + indent, startY + barSize/2, startX + indent + (blockPixelSize + barSize*2 - indent*2)*value, startY + barSize/2);
+    Lines.rect(startX, startY, barLenght, barHeight);
+
+    Draw.color(color, alpha);
+    Fill.rect(drawX - (innerBarLenght * (1 - value))/2, startY + barSize/2, fillSize, innerBarHeight);
 
     if (labelText) {
         exports.drawLabel(labelText, drawX, endY + 4, Color.white);
