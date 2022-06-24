@@ -52,9 +52,17 @@ Shows which processor controls units for testing logic
 
 ![logic-line](https://cdn.discordapp.com/attachments/606977691757051920/954039066305888326/unknown.png)
 
+### Resource rate
+
+Shows how much resources you produce
+
+![rate](https://cdn.discordapp.com/attachments/606977691757051920/989816706987876432/EpicPen_jJO6PgFNf1.png)
+
 ### Other
 
 Extends min and max zoom limits
+
+Saving schemes larger than 35x35. Works in observer mode
 
 Mine sand and other unmineble ores
 
@@ -74,6 +82,10 @@ Shows additional information about enemy blocks
 Tracks other players cursor
 
 ![enemy-cursor](https://cdn.discordapp.com/attachments/606977691757051920/954038645420068934/unknown.png)
+
+Better conveyor/juction pathfind
+
+![pathfind](https://cdn.discordapp.com/attachments/606977691757051920/989817162749317130/EpicPen_DsuGQN1oXs.gif)
 
 ## Interact
 
