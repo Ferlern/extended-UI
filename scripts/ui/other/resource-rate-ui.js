@@ -4,7 +4,8 @@ const formattingUtil = require("extended-ui/utils/formatting");
 const diffs = {};
 
 let contentTable;
-let coreItemsCell;
+let coreItemsCell; // for v6
+let coreItemsCollapser; // for v7
 let oldCoreItemsTable;
 
 let isReplaced = false;
@@ -13,9 +14,14 @@ Events.on(ClientLoadEvent, () => {
     contentTable = new Table(Styles.black6);
     contentTable.pack();
 
-    const coreInfoTable = Vars.ui.hudGroup.find("coreitems");
-    oldCoreItemsTable = coreInfoTable.getChildren().get(0);
-    coreItemsCell = coreInfoTable.getCell(oldCoreItemsTable);
+    if (Version.number < 7) {
+        const coreInfoTable = Vars.ui.hudGroup.find("coreitems");
+        coreItemsCell = coreInfoTable.getCell(oldCoreItemsTable);
+        oldCoreItemsTable = coreInfoTable.getChildren().get(0);
+    } else {
+        coreItemsCollapser = Vars.ui.hudGroup.find('coreinfo').getChildren().get(1).getChildren().get(0);
+        oldCoreItemsTable = coreItemsCollapser.getChildren().get(0);
+    }
     Timer.schedule(update, 0, 3);
 });
 
@@ -28,12 +34,20 @@ function update() {
     if (Core.settings.getBool("eui-ShowResourceRate", false)) {
         if (!isReplaced) {
             isReplaced = true;
-            coreItemsCell.setElement(contentTable);
+            if (Version.number < 7) {
+                coreItemsCell.setElement(contentTable);
+            } else {
+                coreItemsCollapser.setTable(contentTable);
+            }
         }
     } else {
         if (isReplaced) {
             isReplaced = false;
-            coreItemsCell.setElement(oldCoreItemsTable);
+            if (Version.number < 7) {
+                coreItemsCell.setElement(oldCoreItemsTable);
+            } else {
+                coreItemsCollapser.setTable(oldCoreItemsTable);
+            }
         }
     }
 }
