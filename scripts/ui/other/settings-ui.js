@@ -22,6 +22,7 @@ Events.on(EventType.ClientLoadEvent, () => {
         contentTable.checkPref("eui-ShowUnitTable", true);
         contentTable.checkPref("eui-ShowBlockInfo", true);
         contentTable.checkPref("eui-ShowAlerts", true);
+        contentTable.checkPref("eui-ShowAlertsBottom", false);
         contentTable.checkPref("eui-ShowResourceRate", false);
         contentTable.checkPref("eui-ShowSchematicsTable", true);
         contentTable.checkPref("eui-ShowSchematicsPreview", true);
