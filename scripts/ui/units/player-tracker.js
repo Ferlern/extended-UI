@@ -1,6 +1,6 @@
 exports.drawCursor = function(player) {
     //For Players who's set up don't show the system cursor properly, at all or for the hell of it
-    if (player == Vars.player && !Core.settings.getBool("eui-ShowOwnCursor", true)) return;
+    if (player == Vars.player && !Core.settings.getBool("eui-ShowOwnCursor", false)) return;
 
     const unitX = player.x;
     const unitY = player.y;
