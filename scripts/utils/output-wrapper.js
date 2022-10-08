@@ -74,27 +74,28 @@ function showToast(icon, text){
     table.pack();
     
     let container = Core.scene.table();
-    if (Core.settings.getBool("eui-ShowAlertsBottom", true)) {
-           container.setTranslation(0, -table.getMarginBottom() * 4.2);
-           Vars.state.isMenu() ? container.bottom().left().add(table) : container.bottom().add(table);
-           container.actions(
-                 Actions.translateBy(0, table.getMarginBottom() * 4.2, 1, Interp.fade),
-                 Actions.delay(2),
-                 Actions.run(() => container.actions(
-                     Actions.translateBy(0, -table.getMarginBottom() * 4.8 , 1, Interp.fade),
-                     Actions.remove()
-          ) )
-    );
-    }
-    else { container.setTranslation(0, table.getPrefHeight());
-           Vars.state.isMenu() ? container.top().left().add(table) : container.top().add(table);
-           container.actions(
-                 Actions.translateBy(0, -table.getPrefHeight(), 1, Interp.fade),
-                 Actions.delay(2),
-                 Actions.run(() => container.actions(
-                     Actions.translateBy(0, table.getPrefHeight(), 1, Interp.fade),
-                     Actions.remove()
-          ) )
-    );
+    if (Core.settings.getBool("eui-ShowAlertsBottom", false)) {
+        //TODO what is this random numbers? (4.2, 4.8)
+        container.setTranslation(0, -table.getMarginBottom() * 4.2);
+        Vars.state.isMenu() ? container.bottom().left().add(table) : container.bottom().add(table);
+        container.actions(
+            Actions.translateBy(0, table.getMarginBottom() * 4.2, 1, Interp.fade),
+            Actions.delay(2),
+            Actions.run(() => container.actions(
+                Actions.translateBy(0, -table.getMarginBottom() * 4.8 , 1, Interp.fade),
+                Actions.remove()
+            ))
+        );
+    } else {
+        Vars.state.isMenu() ? container.top().right().add(table) : container.top().add(table);
+        container.setTranslation(0, table.getPrefHeight());
+        container.actions(
+            Actions.translateBy(0, -table.getPrefHeight(), 1, Interp.fade),
+            Actions.delay(2.5),
+            Actions.run(() => container.actions(
+                Actions.translateBy(0, table.getPrefHeight(), 1, Interp.fade),
+                Actions.remove()
+            ))
+        );
     }
 }
