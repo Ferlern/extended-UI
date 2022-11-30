@@ -4,6 +4,6 @@
     "author": "wizer",
     "description": "UNSTABLE DEVELOPMENT VERSION. Extend your ui with some useful things.\n\nYou can easily disable any of the mod features in the settings -> graphics -> extended UI.\n\nIf u have any bugs or ideas create an issue on github or contact me in discord: WiZeR1233#9336",
     "version": "0.74",
-    "minGameVersion": "120",
+    "minGameVersion": "136",
     "hidden": true
 }
