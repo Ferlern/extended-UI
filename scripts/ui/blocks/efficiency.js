@@ -1,4 +1,4 @@
-const barBuilder = require("extended-ui/utils/bar-builder");
+const barBuilder = require("extended-ui/utils/draw/bar-builder");
 
 let storage = new Map();
 

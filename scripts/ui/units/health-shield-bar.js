@@ -2,7 +2,7 @@ importPackage(Packages.arc.util.pooling);
 
 const settings = require("extended-ui/settings");
 const iterationTools = require("extended-ui/utils/iteration-tools");
-const barBuilder = require("extended-ui/utils/bar-builder");
+const barBuilder = require("extended-ui/utils/draw/bar-builder");
 const camera = require("extended-ui/utils/camera");
 
 const unitBarSize = settings.unitBarSize;

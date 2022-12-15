@@ -16,7 +16,7 @@ let prevStatus = false;
 
 Events.on(ClientLoadEvent, () => {
     Timer.schedule(update, 0, 1);
-})
+});
 
 function update() {
     const status = Core.settings.getBool("eui-ShowAlerts", true);
