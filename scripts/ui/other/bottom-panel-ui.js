@@ -99,7 +99,7 @@ function buildTable() {
     }).tooltip(Core.bundle.get("interaction-settings.button.auto-unit.tooltip")).get().resizeImage(32*0.8);
 
     if (!Vars.mobile) {
-        buttonTable.button(Icon.save, Styles.clearToggleTransi, () => {
+        buttonTable.button(Icon.save, Styles.clearTogglei, () => {
             schemSelection = !schemSelection;
             euiEvents.emit(euiEvents.eventType.schemSelectionButtonPresed, schemSelection);
         }).tooltip(Core.bundle.get("interaction-settings.button.schem-selection.tooltip")).update(b => {

@@ -30,7 +30,7 @@ Events.run(Trigger.draw, () => {
             }
         }
         if (Core.settings.getBool("eui-TrackLogicControl", false)) {
-            if (unit.controller instanceof LogicAI) {
+            if (unit.controller() instanceof LogicAI) {
                 logicTracker.drawLogicLine(unit);
             }
         }

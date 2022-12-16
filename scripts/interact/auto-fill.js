@@ -77,38 +77,18 @@ function getItemRequest(build, block, core) {
 }
 
 function getFilterRequest(filter, build, core) {
-    const items = Vars.content.items();
-    const bits = new Bits;
-    let bitIndex = 0;
-    let item
-
-    // doesn't work with ConsumeItemFlammable and i don't want to fix it rn ;)
-    try {
-        filter.applyItemFilter(bits);
-    } catch (e) {
-        return null;
-    }
-    do {
-        bitIndex = bits.nextSetBit(bitIndex);
-
-        if (bitIndex == -1) break;
-        // ignore blast compound; it will explode generators
-        if (bitIndex == 14) {
-            bitIndex++;
-            continue;
-        } 
-
-        item = items.get(bitIndex)
-        if (core.items.get(item) >= 20) {
-            if (build.acceptStack(item, 20, Vars.player.unit()) >= 5) {
-                return item;
+    let request = null;
+    let stop = false;
+    Vars.content.items().each(item => {
+        if (filter.filter.get(item) && item != Items.blastCompound && core.items.get(item) >= 20) {
+            if (build.acceptStack(item, 20, Vars.player.unit()) >= 5 && request == null && !stop) {
+                request = item;
             } else {
-                return null;
+                stop = true;
             }
         }
-        bitIndex++;
-    } while (bitIndex > 0);
-    return null;
+    });
+    return request;
 }
 
 function findRequiredItem(stacks, build, core) {

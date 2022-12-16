@@ -4,13 +4,25 @@ const formattingUtil = require("extended-ui/utils/formatting");
 const powerBarDefaultWidth = 300;
 const powerBarDefaultHeight = 25;
 
+let powerBar = null
+
 let graphs = [];
-let coreItems;
 let storedNetPower;
 let maxNetPower;
 let currentNetPower;
 
 let debugTimer;
+
+
+exports.createTableWithBarFrom = (table) => {
+    if (!powerBar) powerBar = new Bar(prov(() => formattingUtil.powerToString(currentNetPower, graphs)), prov(() => Pal.accent), floatp(() => currentPowerStatus()));
+
+    const tableWithBar = new Table();
+    tableWithBar.add(table);
+    tableWithBar.row();
+    tableWithBar.add(powerBar).visible(() => powerBarVisible()).width(powerBarDefaultWidth).height(powerBarDefaultHeight).pad(4);
+    return tableWithBar;
+}
 
 
 Events.run(Trigger.update, () => {
@@ -21,9 +33,9 @@ Events.run(Trigger.update, () => {
     let newCurrentNetPower = 0;
     let newGraphs = [];
 
-    let getAllPowerGraphs = (tile) => {
-        if (tile.build && tile.build.power) {
-            let graph = tile.build.power.graph;
+    let getAllPowerGraphs = (build) => {
+        if (build && build.power) {
+            let graph = build.power.graph;
 
             if (!newGraphs.includes(graph)) {
 
@@ -57,25 +69,6 @@ Events.run(Trigger.update, () => {
     maxNetPower = newMaxNetPower;
     currentNetPower = newCurrentNetPower;
     graphs = newGraphs;
-});
-
-Events.on(ClientLoadEvent, () => {
-    let powerBar = new Bar(prov(() => formattingUtil.powerToString(currentNetPower, graphs)), prov(() => Pal.accent), floatp(() => currentPowerStatus()));
-
-    if (Version.number < 7) {
-        coreItems = Vars.ui.hudGroup.find("coreitems");
-        coreItems.row();
-        coreItems.getCells().get(0).padBottom(6);
-        coreItems.add(powerBar).visible(() => powerBarVisible()).width(powerBarDefaultWidth).height(powerBarDefaultHeight).pad(4);
-    } else {
-        Vars.ui.hudGroup.fill(cons(t => {
-            t.add(powerBar).width(powerBarDefaultWidth).height(powerBarDefaultHeight).visible(() => {
-                return (powerBarVisible() && Vars.ui.hudfrag.shown);
-            });
-            t.top().right().marginRight(160).marginTop(10);
-            t.pack();
-        }));
-    }
 });
 
 function currentPowerStatus() {

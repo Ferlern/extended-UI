@@ -34,8 +34,10 @@ Events.on(ClientLoadEvent, () => {
             base = SolidPump.SolidPumpBuild;
         } else if (block instanceof Separator) {
             base = Separator.SeparatorBuild;
-        } else if (block instanceof LiquidConverter) {
-            base = LiquidConverter.LiquidConverterBuild;
+        } else if (block instanceof HeatProducer) {
+            base = HeatProducer.HeatProducerBuild;
+        } else if (block instanceof HeatCrafter) {
+            base = HeatCrafter.HeatCrafterBuild;
         } else if (is7 && block instanceof AttributeCrafter) {
             base = AttributeCrafter.AttributeCrafterBuild;
         } else if (is6 && block instanceof Cultivator) {
@@ -46,17 +48,10 @@ Events.on(ClientLoadEvent, () => {
             base = GenericCrafter.GenericCrafterBuild;
         } else if (block instanceof Drill) {
             base = Drill.DrillBuild;
-        // }
-        // else if (block instanceof ImpactReactor) {
-        //     base = ImpactReactor.ImpactReactorBuild;
-        // } else if (block instanceof NuclearReactor) {
-        //     base = NuclearReactor.NuclearReactorBuild;
-        // } else if (block instanceof DecayGenerator) {
-        //     base = DecayGenerator.DecayGeneratorBuild; no
-        // } else if (block instanceof SingleTypeGenerator) {
-        //     base = SingleTypeGenerator.GeneratorBuild; no
-        // } else if (block instanceof BurnerGenerator) {
-        //     base = BurnerGenerator.BurnerGeneratorBuild; no
+        } else if (block instanceof ImpactReactor) {
+            base = ImpactReactor.ImpactReactorBuild;
+        } else if (block instanceof NuclearReactor) {
+            base = NuclearReactor.NuclearReactorBuild;
         } else {
             return;
         }

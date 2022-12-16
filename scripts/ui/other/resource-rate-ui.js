@@ -1,27 +1,22 @@
 const Difference = require("extended-ui/utils/difference");
 const formattingUtil = require("extended-ui/utils/formatting");
+const powerUI = require("extended-ui/ui/other/power-ui");
 
 const diffs = {};
 
 let contentTable;
-let coreItemsCell; // for v6
 let coreItemsCollapser; // for v7
 let oldCoreItemsTable;
 
 let isReplaced = false;
+let booted = false;
 
 Events.on(ClientLoadEvent, () => {
     contentTable = new Table(Styles.black6);
     contentTable.pack();
 
-    if (Version.number < 7) {
-        const coreInfoTable = Vars.ui.hudGroup.find("coreitems");
-        oldCoreItemsTable = coreInfoTable.getChildren().get(0);
-        coreItemsCell = coreInfoTable.getCell(oldCoreItemsTable);
-    } else {
-        coreItemsCollapser = Vars.ui.hudGroup.find('coreinfo').getChildren().get(1).getChildren().get(0);
-        oldCoreItemsTable = coreItemsCollapser.getChildren().get(0);
-    }
+    coreItemsCollapser = Vars.ui.hudGroup.find('coreinfo').getChildren().get(1).getChildren().get(0);
+    oldCoreItemsTable = coreItemsCollapser.getChildren().get(0);
     Timer.schedule(update, 0, 3);
 });
 
@@ -32,22 +27,18 @@ Events.run(Trigger.update, () => {
 
 function update() {
     if (Core.settings.getBool("eui-ShowResourceRate", false)) {
-        if (!isReplaced) {
+        if (!isReplaced || !booted) {
+            const resourceTable = powerUI.createTableWithBarFrom(contentTable);
             isReplaced = true;
-            if (Version.number < 7) {
-                coreItemsCell.setElement(contentTable);
-            } else {
-                coreItemsCollapser.setTable(contentTable);
-            }
+            booted = true;
+            coreItemsCollapser.setTable(resourceTable);
         }
     } else {
-        if (isReplaced) {
+        if (isReplaced || !booted) {
+            const resourceTable = powerUI.createTableWithBarFrom(oldCoreItemsTable);
             isReplaced = false;
-            if (Version.number < 7) {
-                coreItemsCell.setElement(oldCoreItemsTable);
-            } else {
-                coreItemsCollapser.setTable(oldCoreItemsTable);
-            }
+            booted = true;
+            coreItemsCollapser.setTable(resourceTable);
         }
     }
 }
@@ -71,7 +62,7 @@ function buildTable() {
         const color = difference >= 0 ? '[green]' : '[red]';
         const sign = difference >= 0 ? '+' : '';
 
-        resourcesTable.image(item.icon(Cicon.small)).left();
+        resourcesTable.image(item.uiIcon).left();
         resourcesTable.label(() => {
             return formattingUtil.numberToString(amount);
         }).padLeft(2).left().padRight(1);
